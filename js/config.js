@@ -6,14 +6,14 @@ export const DEBUG_MODE = false;
 
 // Firebase configuration
 export const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
+    apiKey: "AIzaSyBXu8FDjPi8CMdKONGHpMBdIF3_7p6UrAA",
+    authDomain: "rctc-fall2026.firebaseapp.com",
+    databaseURL: "https://rctc-fall2026-default-rtdb.firebaseio.com",
+    projectId: "rctc-fall2026",
+    storageBucket: "rctc-fall2026.firebasestorage.app",
+    messagingSenderId: "60772001444",
+    appId: "1:60772001444:web:f1789d2afe3e4a44b56831",
+    measurementId: "G-JFWY5NSC44"
 };
 
 // Google Drive upload URL
@@ -29,7 +29,7 @@ export const VERSION = 'v4.5';
 // Feature flags - control optional features
 export const features = {
     search: false,      // Search functionality
-    github: true,       // GitHub integration (sync via Actions)
+    github: false,      // GitHub integration (sync via Actions)
     versions: true,     // Version management
     pdfExport: true     // PDF export
 };
