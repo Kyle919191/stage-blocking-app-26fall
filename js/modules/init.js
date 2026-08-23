@@ -12,6 +12,14 @@ let blockingData = {};
 let dialogueEdits = {};
 let githubConfig = null;
 
+function normalizeLineOperations(rawData) {
+    const data = rawData || {};
+    return {
+        added: data.added || {},
+        deleted: data.deleted || {}
+    };
+}
+
 // 使用 BlockingApp.state 作为统一UI状态源
 
 // 导出获取器函数
@@ -376,15 +384,16 @@ export async function loadLineOperations() {
     log('  🔥 从Firebase加载行操作...');
     const firebasePromise = new Promise((resolve) => {
         lineOperationsRef.once('value', (snapshot) => {
-            const data = snapshot.val() || { added: {}, deleted: {} };
+            const data = normalizeLineOperations(snapshot.val());
             window.lineOperations = data;
             BlockingApp.data.lineOperations = data;
             log(`  ✓ 行操作加载完成`);
 
             const lineOpListener = lineOperationsRef.on('value', (snapshot) => {
                 if (BlockingApp.state.isLoadingFromFirebase) return;
-                const data = snapshot.val() || { added: {}, deleted: {} };
+                const data = normalizeLineOperations(snapshot.val());
                 window.lineOperations = data;
+                BlockingApp.data.lineOperations = data;
 
                 if (BlockingApp.state.currentView === 'lines' && window.currentScene) {
                     if (window.displayLines) window.displayLines(window.currentScene.id);

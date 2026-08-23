@@ -6,6 +6,18 @@ import { getCurrentSceneId, validateFirebasePath, updateSaveStatus } from '../ut
 // 模块内部状态
 let currentlyEditingLine = null;
 
+function ensureLineOperationsShape() {
+    if (!window.lineOperations) {
+        window.lineOperations = { added: {}, deleted: {} };
+    }
+    if (!window.lineOperations.added) {
+        window.lineOperations.added = {};
+    }
+    if (!window.lineOperations.deleted) {
+        window.lineOperations.deleted = {};
+    }
+}
+
 // 开始编辑行
 export function startEditLine(lineId) {
     if (currentlyEditingLine) {
@@ -117,9 +129,7 @@ export function deleteLine(lineId) {
             return;
         }
 
-        if (!window.lineOperations.deleted) {
-            window.lineOperations.deleted = {};
-        }
+        ensureLineOperationsShape();
         if (!window.lineOperations.deleted[window.currentScene.id]) {
             window.lineOperations.deleted[window.currentScene.id] = [];
         }
@@ -276,6 +286,7 @@ export function addNewLine(position, lineId) {
 
         const newLineId = `${sceneId}-new-${Date.now()}`;
 
+        ensureLineOperationsShape();
         if (!window.lineOperations.added[sceneId]) {
             window.lineOperations.added[sceneId] = {};
         }

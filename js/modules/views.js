@@ -98,9 +98,18 @@ export function switchView(view) {
 
 // ==================== displayLines 函数拆分 ====================
 
+function getSafeLineOperations() {
+    const lineOperations = window.lineOperations || {};
+    return {
+        added: lineOperations.added || {},
+        deleted: lineOperations.deleted || {}
+    };
+}
+
 // 辅助函数：过滤已删除的行
 function filterDeletedLines(sceneLines, sceneId) {
-    const deletedLines = window.lineOperations.deleted[sceneId] || [];
+    const { deleted } = getSafeLineOperations();
+    const deletedLines = deleted[sceneId] || [];
     return sceneLines.filter((line) => {
         const lineId = `${line.sceneId}-${line.originalIndex}`;
         return !deletedLines.includes(lineId);
@@ -109,7 +118,8 @@ function filterDeletedLines(sceneLines, sceneId) {
 
 // 辅助函数：插入新增的行
 function insertAddedLines(sceneLines, sceneId) {
-    const addedLines = window.lineOperations.added[sceneId] || {};
+    const { added } = getSafeLineOperations();
+    const addedLines = added[sceneId] || {};
     let allLines = [...sceneLines];
 
     Object.entries(addedLines).forEach(([newLineId, newLine]) => {
@@ -264,7 +274,8 @@ export function displayLines(sceneId) {
         movementsPanel.style.display = 'none';
     }
 
-    const deletedLines = window.lineOperations.deleted[sceneId] || [];
+    const { deleted } = getSafeLineOperations();
+    const deletedLines = deleted[sceneId] || [];
     sceneLines = filterDeletedLines(sceneLines, sceneId);
     const allLines = insertAddedLines(sceneLines, sceneId);
 
