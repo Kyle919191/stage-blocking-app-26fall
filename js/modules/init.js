@@ -1,5 +1,15 @@
 // init.js - 初始化和数据加载模块
-import { BlockingApp, blockingRef, scenesRef, dialogueEditsRef, lineOperationsRef, notesRef } from '../services/firebase.js';
+import {
+    BlockingApp,
+    blockingRef,
+    scenesRef,
+    dialogueEditsRef,
+    lineOperationsRef,
+    notesRef,
+    scriptScenesRef,
+    scriptCharactersRef,
+    scriptLinesRef
+} from '../services/firebase.js';
 import { log, logError } from '../utils/logger.js';
 import { withTimeout, showStatus, updateSaveStatus, getCurrentSceneId, safeAddEventListener, getSceneCharactersList } from '../utils/helpers.js';
 import { features } from '../config.js';
@@ -18,6 +28,38 @@ function normalizeLineOperations(rawData) {
         added: data.added || {},
         deleted: data.deleted || {}
     };
+}
+
+async function loadArrayFromFirebase(ref, label) {
+    const firebasePromise = new Promise((resolve) => {
+        ref.once('value', (snapshot) => {
+            const data = snapshot.val();
+            if (Array.isArray(data)) {
+                log(`  🔥 使用 Firebase ${label}（${data.length} 条）`);
+                resolve(data);
+                return;
+            }
+            resolve(null);
+        }, (error) => {
+            logError(`  ❌ Firebase ${label} 读取失败:`, error);
+            resolve(null);
+        });
+    });
+
+    try {
+        return await withTimeout(firebasePromise, 5000, `load ${label}`);
+    } catch (error) {
+        logError(`  ⚠️ Firebase ${label} 加载超时:`, error.message);
+        return null;
+    }
+}
+
+async function loadJsonArray(path, label) {
+    log(`  📄 获取 ${path}...`);
+    const response = await fetch(path);
+    const data = await response.json();
+    log(`  📋 本地 ${label} 读取到 ${data.length} 条`);
+    return data;
 }
 
 // 使用 BlockingApp.state 作为统一UI状态源
@@ -87,7 +129,7 @@ export async function init() {
             logError('⚠️ 没有找到任何场景！');
         }
 
-        showStatus('数据加载完成', 'success');
+        showStatus(`数据加载完成（数据集: ${BlockingApp.data.datasetId}）`, 'success');
         log('✨ 初始化完成！');
 
         setTimeout(() => {
@@ -105,9 +147,8 @@ export async function init() {
 
 // 数据加载函数
 export async function loadScenes() {
-    log('  📄 获取 scenes.json...');
-    const response = await fetch('data/scenes.json');
-    scenes = await response.json();
+    const firebaseScenes = await loadArrayFromFirebase(scriptScenesRef, 'scriptData.scenes');
+    scenes = firebaseScenes || await loadJsonArray('data/scenes.json', 'scenes');
     BlockingApp.data.scenes = scenes;
     log(`  📋 读取到 ${scenes.length} 个场景`);
 
@@ -140,17 +181,15 @@ export async function loadScenes() {
 }
 
 export async function loadCharacters() {
-    log('  📄 获取 characters.json...');
-    const response = await fetch('data/characters.json');
-    window.characters = await response.json();
+    const firebaseCharacters = await loadArrayFromFirebase(scriptCharactersRef, 'scriptData.characters');
+    window.characters = firebaseCharacters || await loadJsonArray('data/characters.json', 'characters');
     BlockingApp.data.characters = window.characters;
     log(`  👥 读取到 ${window.characters.length} 个角色`);
 }
 
 export async function loadLines() {
-    log('  📄 获取 lines.json...');
-    const response = await fetch('data/lines.json');
-    lines = await response.json();
+    const firebaseLines = await loadArrayFromFirebase(scriptLinesRef, 'scriptData.lines');
+    lines = firebaseLines || await loadJsonArray('data/lines.json', 'lines');
     BlockingApp.data.lines = lines;
     log(`  💬 读取到 ${lines.length} 条台词`);
 
@@ -544,8 +583,10 @@ export function selectScene(sceneId) {
 
     if (BlockingApp.state.currentView === 'lines') {
         if (window.displayLines) window.displayLines(sceneId);
-    } else {
+    } else if (BlockingApp.state.currentView === 'characters') {
         if (window.displayCharacters) window.displayCharacters(sceneId);
+    } else if (BlockingApp.state.currentView === 'blocking') {
+        if (window.displayBlockingTimeline) window.displayBlockingTimeline(sceneId);
     }
 
     // 更新状态栏

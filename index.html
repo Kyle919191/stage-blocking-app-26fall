@@ -39,6 +39,7 @@
             <div class="view-toggle">
                 <button id="linesViewBtn" class="active" onclick="switchView('lines')">台词视图</button>
                 <button id="charactersViewBtn" onclick="switchView('characters')">角色视图</button>
+                <button id="blockingViewBtn" onclick="switchView('blocking')">走位视图</button>
             </div>
 
             <!-- 模式切换（仅台词视图显示）-->
@@ -326,7 +327,7 @@
         <div class="modal-content" style="max-width: 700px;">
             <div class="modal-header">舞台图管理</div>
             <div class="config-actors-info">
-                <p>每一幕对应一张舞台图，上传后将同步到 GitHub 仓库</p>
+                <p>每一幕对应一张舞台图，上传后保存到当前数据集</p>
             </div>
             <div class="stage-image-grid" id="stageImageGrid">
                 <!-- 动态生成 -->

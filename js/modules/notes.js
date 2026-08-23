@@ -123,11 +123,6 @@ export function saveNote() {
         window.notes[sceneId][pendingNoteLineId] = [];
     }
 
-    // 检查是否已有相同位置的备注
-    const existingIndex = window.notes[sceneId][pendingNoteLineId].findIndex(
-        n => n.charIndex === pendingNoteCharIndex
-    );
-
     const noteData = {
         charIndex: pendingNoteCharIndex,
         characterId: characterId,
@@ -135,13 +130,8 @@ export function saveNote() {
         createdAt: Date.now()
     };
 
-    if (existingIndex >= 0) {
-        // 更新现有备注
-        window.notes[sceneId][pendingNoteLineId][existingIndex] = noteData;
-    } else {
-        // 添加新备注
-        window.notes[sceneId][pendingNoteLineId].push(noteData);
-    }
+    // 允许同一字符位置存在多个备注
+    window.notes[sceneId][pendingNoteLineId].push(noteData);
 
     // 保存到 Firebase
     autoSaveNotes();
@@ -156,15 +146,18 @@ export function saveNote() {
 }
 
 // 删除备注
-export function deleteNote(lineId, charIndex) {
+export function deleteNote(lineId, charIndex, createdAt = null) {
     if (!confirm('确定要删除这个备注吗？')) return;
 
     const sceneId = window.currentScene.id;
 
     if (window.notes[sceneId]?.[lineId]) {
-        const index = window.notes[sceneId][lineId].findIndex(
-            n => n.charIndex === charIndex
-        );
+        const index = window.notes[sceneId][lineId].findIndex((n) => {
+            if (createdAt) {
+                return n.charIndex === charIndex && n.createdAt === createdAt;
+            }
+            return n.charIndex === charIndex;
+        });
 
         if (index >= 0) {
             window.notes[sceneId][lineId].splice(index, 1);

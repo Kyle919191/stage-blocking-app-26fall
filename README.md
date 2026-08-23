@@ -86,6 +86,54 @@ python3 -m http.server 8000
 
 Open `http://localhost:8000`. Blocking data now saves to Firebase automatically.
 
+## Dataset Switching (Testing Sets)
+
+You can switch between isolated datasets by adding a URL parameter:
+
+```text
+http://localhost:8000/?dataset=default
+http://localhost:8000/?dataset=test-a
+https://your-vercel-app.vercel.app/?dataset=test-b
+```
+
+For non-default datasets, data is stored under:
+
+```text
+datasets/{datasetId}/blockingData
+datasets/{datasetId}/dialogueEdits
+datasets/{datasetId}/lineOperations
+datasets/{datasetId}/notes
+datasets/{datasetId}/versions
+datasets/{datasetId}/scenes
+datasets/{datasetId}/sceneStageMap
+datasets/{datasetId}/stageLibrary
+datasets/{datasetId}/commonActions
+datasets/{datasetId}/scriptData/{characters|scenes|lines}
+```
+
+Notes:
+- If `dataset` is missing, the app uses `default`.
+- `default` keeps backward compatibility by reading/writing the legacy top-level nodes (`blockingData`, `notes`, etc.).
+- Anyone with the link can switch datasets by changing `?dataset=...`.
+- If `scriptData/*` is not present in Firebase for a dataset, the app falls back to local `data/*.json`.
+
+### Automation CLI for dataset setup
+
+Use `scripts/dataset_admin.py` to seed and modify dataset-specific script data without manual Firebase editing:
+
+```bash
+# Seed one dataset from local data/*.json
+python3 scripts/dataset_admin.py seed-script-data --dataset testing1
+
+# Add one character to a dataset
+python3 scripts/dataset_admin.py add-character --dataset testing1 --name John
+
+# Check counts
+python3 scripts/dataset_admin.py show-dataset --dataset testing1
+```
+
+When you ask Cursor something like "add character John for dataset=testing1", it can run this script for you.
+
 ## Preparing Your Script Data
 
 Edit the JSON files under `data/` to match your production. Only three files are required:

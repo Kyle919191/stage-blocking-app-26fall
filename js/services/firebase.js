@@ -7,25 +7,62 @@ import { getCurrentSceneId, validateFirebasePath } from '../utils/helpers.js';
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+function sanitizeDatasetId(rawDatasetId) {
+    const fallback = 'default';
+    if (!rawDatasetId || typeof rawDatasetId !== 'string') return fallback;
+    const trimmed = rawDatasetId.trim();
+    if (!trimmed) return fallback;
+    const normalized = trimmed.replace(/[^a-zA-Z0-9_-]/g, '');
+    if (!normalized) return fallback;
+    return normalized.slice(0, 64);
+}
+
+function getDatasetIdFromUrl() {
+    try {
+        const params = new URLSearchParams(window.location.search);
+        return sanitizeDatasetId(params.get('dataset'));
+    } catch (error) {
+        logError('读取 dataset 参数失败，使用默认值:', error);
+        return 'default';
+    }
+}
+
+export const currentDatasetId = getDatasetIdFromUrl();
+const useLegacyTopLevel = currentDatasetId === 'default';
+const datasetBasePath = useLegacyTopLevel ? null : `datasets/${currentDatasetId}`;
+
+function refFor(nodeName) {
+    if (useLegacyTopLevel) {
+        return database.ref(nodeName);
+    }
+    return database.ref(`${datasetBasePath}/${nodeName}`);
+}
+
 // BlockingApp 命名空间 - 封装所有全局状态
 export const BlockingApp = {
     // Firebase 引用
     firebase: {
         database: database,
-        blockingRef: database.ref('blockingData'),
-        versionsRef: database.ref('versions'),
-        scenesRef: database.ref('scenes'),
-        dialogueEditsRef: database.ref('dialogueEdits'),
-        lineOperationsRef: database.ref('lineOperations'),
-        notesRef: database.ref('notes'),
-        commonActionsRef: database.ref('commonActions'),
-        stageLibraryRef: database.ref('stageLibrary'),
-        sceneStageMapRef: database.ref('sceneStageMap'),
+        datasetId: currentDatasetId,
+        datasetBasePath: datasetBasePath || '(legacy root)',
+        blockingRef: refFor('blockingData'),
+        versionsRef: refFor('versions'),
+        scenesRef: refFor('scenes'),
+        dialogueEditsRef: refFor('dialogueEdits'),
+        lineOperationsRef: refFor('lineOperations'),
+        notesRef: refFor('notes'),
+        commonActionsRef: refFor('commonActions'),
+        stageLibraryRef: refFor('stageLibrary'),
+        sceneStageMapRef: refFor('sceneStageMap'),
+        scriptScenesRef: refFor('scriptData/scenes'),
+        scriptCharactersRef: refFor('scriptData/characters'),
+        scriptLinesRef: refFor('scriptData/lines'),
         listeners: []
     },
 
     // 数据存储
     data: {
+        datasetId: currentDatasetId,
         scenes: [],
         characters: [],
         lines: [],
@@ -46,6 +83,7 @@ export const BlockingApp = {
         selectedLine: null,
         selectedCharIndex: null,
         selectedCharacter: null,
+        selectedBlockingSnapshot: null,
         pendingMarker: null,
         settingInitial: false,
         addingFreeMovement: false,
@@ -276,3 +314,6 @@ export const notesRef = BlockingApp.firebase.notesRef;
 export const commonActionsRef = BlockingApp.firebase.commonActionsRef;
 export const stageLibraryRef = BlockingApp.firebase.stageLibraryRef;
 export const sceneStageMapRef = BlockingApp.firebase.sceneStageMapRef;
+export const scriptScenesRef = BlockingApp.firebase.scriptScenesRef;
+export const scriptCharactersRef = BlockingApp.firebase.scriptCharactersRef;
+export const scriptLinesRef = BlockingApp.firebase.scriptLinesRef;

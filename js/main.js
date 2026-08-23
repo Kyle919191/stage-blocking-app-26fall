@@ -65,7 +65,7 @@ window.addEventListener('beforeunload', () => {
 const requiredFunctions = [
     // 视图相关
     'switchView', 'switchMode', 'updateSceneStats',
-    'displayLines', 'displayCharacters',
+    'displayLines', 'displayCharacters', 'displayBlockingTimeline', 'selectBlockingStep',
     'filterLines', 'filterCharacters',
     'selectCharacter', 'selectCharacterForView',
 

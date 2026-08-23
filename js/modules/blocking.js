@@ -316,6 +316,12 @@ export function renderStageView() {
             // 默认显示开场状态
             renderOpeningSnapshot();
         }
+    } else if (BlockingApp.state.currentView === 'blocking') {
+        if (BlockingApp.state.selectedBlockingSnapshot) {
+            renderBlockingSnapshot(BlockingApp.state.selectedBlockingSnapshot);
+        } else {
+            renderOpeningSnapshot();
+        }
     } else if (BlockingApp.state.currentView === 'characters' && BlockingApp.state.selectedCharacter) {
         renderCharacterTrajectory();
         updatePositionDisplay('角色视图', BlockingApp.state.selectedCharacter);
@@ -325,6 +331,29 @@ export function renderStageView() {
     if (selectedMarkers.length >= 2) {
         drawBoundingBox(svg);
     }
+}
+
+function renderBlockingSnapshot(snapshot) {
+    const svg = document.getElementById('stageOverlay');
+    if (!svg || !snapshot) return;
+
+    updatePositionDisplay('走位视图', `Step ${snapshot.index + 1}`);
+
+    Object.entries(snapshot.positions || {}).forEach(([charName, marker]) => {
+        const character = window.characters.find(c => c.name === charName);
+        if (!character || !marker) return;
+        drawMarker(
+            svg,
+            marker.x,
+            marker.y,
+            character.color,
+            charName,
+            !!marker.isInitial,
+            charName,
+            true,
+            marker.movementIndex ?? -1
+        );
+    });
 }
 
 // 渲染开场快照（所有角色的初始位置）
@@ -557,8 +586,11 @@ export function drawMarker(svg, x, y, color, label, isStart = false, charName = 
         circle.setAttribute('stroke-width', '2');
     }
 
-    // 在角色视图和台词视图都启用拖拽
-    const isDraggableView = BlockingApp.state.currentView === 'characters' || BlockingApp.state.currentView === 'lines';
+    // 在角色视图、台词视图和走位视图都启用拖拽
+    const isDraggableView =
+        BlockingApp.state.currentView === 'characters' ||
+        BlockingApp.state.currentView === 'lines' ||
+        BlockingApp.state.currentView === 'blocking';
     if (deletable && charName && isDraggableView) {
         // 只在坐标调整模式下显示可拖拽的光标
         circle.style.cursor = isCoordinateAdjustMode ? 'grab' : 'default';
@@ -693,6 +725,12 @@ export function handleMarkerDrag(e, svg) {
                 markerCharData.movements[marker.movementIndex].x = newX;
                 markerCharData.movements[marker.movementIndex].y = newY;
             }
+
+            // 走位视图使用快照渲染，拖拽时同步更新当前快照坐标
+            if (BlockingApp.state.currentView === 'blocking' && BlockingApp.state.selectedBlockingSnapshot?.positions?.[marker.charName]) {
+                BlockingApp.state.selectedBlockingSnapshot.positions[marker.charName].x = newX;
+                BlockingApp.state.selectedBlockingSnapshot.positions[marker.charName].y = newY;
+            }
         });
     } else {
         // 单点拖拽：原有逻辑
@@ -710,6 +748,12 @@ export function handleMarkerDrag(e, svg) {
             charData.movements[movementIndex].x = coords.x;
             charData.movements[movementIndex].y = coords.y;
         }
+
+        // 走位视图使用快照渲染，拖拽时同步更新当前快照坐标
+        if (BlockingApp.state.currentView === 'blocking' && BlockingApp.state.selectedBlockingSnapshot?.positions?.[charName]) {
+            BlockingApp.state.selectedBlockingSnapshot.positions[charName].x = coords.x;
+            BlockingApp.state.selectedBlockingSnapshot.positions[charName].y = coords.y;
+        }
     }
 
     renderStageView();
@@ -720,6 +764,12 @@ export function endMarkerDrag() {
     if (draggingMarker) {
         draggingMarker = null;
         autoSave();
+        // 走位视图下重建快照序列，确保后续步骤也同步最新位置
+        if (BlockingApp.state.currentView === 'blocking' && window.displayBlockingTimeline && window.selectBlockingStep) {
+            const selectedStepIndex = BlockingApp.state.selectedBlockingSnapshot?.index || 0;
+            window.displayBlockingTimeline(window.currentScene.id);
+            window.selectBlockingStep(selectedStepIndex);
+        }
     }
 }
 
@@ -1476,19 +1526,25 @@ export function autoSave() {
 }
 
 // 删除走位（从台词视图）
-export function deleteMovement(lineId, charIndex) {
+export function deleteMovement(lineId, charIndex, targetCharacterName = null, targetTimestamp = null) {
     if (!confirm('确定要删除这个走位标记吗？')) return;
 
     const sceneId = window.currentScene.id;
     const sceneData = window.blockingData[sceneId] || {};
 
+    let deleted = false;
     Object.keys(sceneData).forEach(charName => {
+        if (deleted) return;
+        if (targetCharacterName && charName !== targetCharacterName) return;
+
         const charData = sceneData[charName];
         if (!charData.movements) return;
 
-        const index = charData.movements.findIndex(m =>
-            m.lineId === lineId && m.charIndex === charIndex
-        );
+        const index = charData.movements.findIndex((m) => {
+            if (m.lineId !== lineId || m.charIndex !== charIndex) return false;
+            if (targetTimestamp) return m.timestamp === targetTimestamp;
+            return true;
+        });
 
         if (index !== -1) {
             charData.movements.splice(index, 1);
@@ -1496,6 +1552,7 @@ export function deleteMovement(lineId, charIndex) {
             showStatus(`已删除走位标记`, 'success');
             if (window.displayLines) window.displayLines(sceneId);
             renderStageView();
+            deleted = true;
         }
     });
 }

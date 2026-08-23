@@ -2,7 +2,6 @@
 import { BlockingApp, stageLibraryRef, sceneStageMapRef } from '../services/firebase.js';
 import { showStatus } from '../utils/helpers.js';
 import { log, logError } from '../utils/logger.js';
-import { GITHUB_REPO } from '../config.js';
 
 // 当前 Tab 状态
 let currentTab = 'library';
@@ -30,15 +29,6 @@ function generateImageKey(name) {
     const timestamp = Date.now();
     const safeName = name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_');
     return `${safeName}_${timestamp}`;
-}
-
-// 获取GitHub配置（从localStorage）
-function getGithubToken() {
-    return localStorage.getItem('stageImageGithubToken') || '';
-}
-
-function setGithubToken(token) {
-    localStorage.setItem('stageImageGithubToken', token);
 }
 
 // 加载图片库数据（从 Firebase，并与本地同步）
@@ -89,88 +79,10 @@ export async function loadStageLibrary() {
     }
 }
 
-// 一次性同步所有本地图片到 GitHub（手动触发）
+// 保留兼容入口：当前版本不再依赖 GitHub 同步
 export async function syncAllImagesToGitHub() {
-    const token = getGithubToken();
-    if (!token) {
-        showStatus('请先配置 GitHub Token', 'warning');
-        return false;
-    }
-
-    const library = BlockingApp.data.stageImages?.library || {};
-    const images = Object.entries(library);
-
-    if (images.length === 0) {
-        showStatus('没有图片需要同步', 'info');
-        return false;
-    }
-
-    showStatus(`开始同步 ${images.length} 张图片到 GitHub...`, 'info');
-
-    let successCount = 0;
-    for (const [key, data] of images) {
-        if (!data.base64) continue;
-
-        try {
-            const content = data.base64.split(',')[1];
-            const githubPath = `stage-layouts/library/${key}.png`;
-
-            // 检查文件是否已存在
-            let sha = null;
-            try {
-                const existingFile = await fetch(
-                    `https://api.github.com/repos/${GITHUB_REPO}/contents/${githubPath}?ref=main`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-                if (existingFile.ok) {
-                    const fileData = await existingFile.json();
-                    sha = fileData.sha;
-                    log(`    跳过已存在: ${data.name}`);
-                    successCount++;
-                    continue;
-                }
-            } catch (e) {
-                // 文件不存在，继续上传
-            }
-
-            // 上传到 GitHub
-            const response = await fetch(
-                `https://api.github.com/repos/${GITHUB_REPO}/contents/${githubPath}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `同步舞台图: ${data.name}`,
-                        content: content,
-                        branch: 'main',
-                        sha: sha
-                    })
-                }
-            );
-
-            if (response.ok) {
-                log(`    ✓ 上传成功: ${data.name}`);
-                successCount++;
-            } else {
-                const error = await response.json();
-                logError(`    ✗ 上传失败: ${data.name}`, error.message);
-            }
-        } catch (error) {
-            logError(`    ✗ 上传失败: ${data.name}`, error);
-        }
-    }
-
-    showStatus(`同步完成: ${successCount}/${images.length} 张图片`, successCount === images.length ? 'success' : 'warning');
-    return successCount === images.length;
+    showStatus('当前版本无需配置 GitHub Token，图片已直接保存到 Firebase', 'info');
+    return true;
 }
 
 // 加载场次配置
@@ -201,14 +113,6 @@ export function getStageImageForScene(sceneId) {
 
 // 上传图片到图片库
 export async function uploadToLibrary(files, names = []) {
-    const token = getGithubToken();
-
-    if (!token) {
-        showStatus('请先设置 GitHub Token', 'warning');
-        showTokenConfig();
-        return false;
-    }
-
     if (!BlockingApp.data.stageImages.library) {
         BlockingApp.data.stageImages.library = {};
     }
@@ -224,49 +128,24 @@ export async function uploadToLibrary(files, names = []) {
 
             // 转换为 Base64
             const base64Content = await fileToBase64(file);
-            const content = base64Content.split(',')[1];
 
             // 生成唯一 key
             const imageKey = generateImageKey(customName);
             const path = `stage-layouts/library/${imageKey}.png`;
+            // 直接保存到 Firebase（无需 GitHub Token）
+            const imageData = {
+                name: customName,
+                base64: base64Content,
+                path: path,
+                uploadedAt: Date.now()
+            };
 
-            // 上传到 GitHub
-            const response = await fetch(
-                `https://api.github.com/repos/${GITHUB_REPO}/contents/${path}`,
-                {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        message: `添加舞台图: ${customName}`,
-                        content: content,
-                        branch: 'main'
-                    })
-                }
-            );
+            await stageLibraryRef.child(imageKey).set(imageData);
 
-            if (response.ok) {
-                // 保存到 Firebase
-                const imageData = {
-                    name: customName,
-                    base64: base64Content,
-                    path: path,
-                    uploadedAt: Date.now()
-                };
+            // 更新本地缓存
+            BlockingApp.data.stageImages.library[imageKey] = imageData;
 
-                await stageLibraryRef.child(imageKey).set(imageData);
-
-                // 更新本地缓存
-                BlockingApp.data.stageImages.library[imageKey] = imageData;
-
-                results.push({ success: true, name: customName, key: imageKey });
-            } else {
-                const error = await response.json();
-                throw new Error(error.message || '上传失败');
-            }
+            results.push({ success: true, name: customName, key: imageKey });
         } catch (error) {
             logError(`上传 ${customName} 失败:`, error);
             results.push({ success: false, name: customName, error: error.message });
@@ -288,7 +167,6 @@ export async function uploadToLibrary(files, names = []) {
 
 // 从图片库删除
 export async function deleteFromLibrary(imageKey) {
-    const token = getGithubToken();
     const library = BlockingApp.data.stageImages.library || {};
     const imageData = library[imageKey];
 
@@ -313,43 +191,6 @@ export async function deleteFromLibrary(imageKey) {
 
     try {
         showStatus('正在删除...', 'info');
-
-        // 从 GitHub 删除（需要先获取 SHA）
-        if (token && imageData.path) {
-            try {
-                const getResponse = await fetch(
-                    `https://api.github.com/repos/${GITHUB_REPO}/contents/${imageData.path}?ref=main`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-
-                if (getResponse.ok) {
-                    const fileData = await getResponse.json();
-                    await fetch(
-                        `https://api.github.com/repos/${GITHUB_REPO}/contents/${imageData.path}`,
-                        {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                message: `删除舞台图: ${imageData.name}`,
-                                sha: fileData.sha,
-                                branch: 'main'
-                            })
-                        }
-                    );
-                }
-            } catch (e) {
-                logError('GitHub 删除失败:', e);
-            }
-        }
 
         // 从 Firebase 删除
         await stageLibraryRef.child(imageKey).remove();
@@ -510,54 +351,12 @@ function switchTab(tab) {
     }
 }
 
-// 显示 Token 配置
-function showTokenConfig() {
-    const currentToken = getGithubToken();
-    const maskedToken = currentToken ? '****' + currentToken.slice(-8) : '未设置';
-
-    const modal = document.getElementById('stageImageModal');
-    const content = modal.querySelector('.modal-content');
-
-    content.innerHTML = `
-        <div class="modal-header">GitHub Token 配置</div>
-        <div class="config-actors-info">
-            <p>上传舞台图需要具有 <code>repo</code> 权限的 GitHub Personal Access Token</p>
-            <p style="margin-top: 10px; font-size: 12px; color: #666;">
-                创建方法：GitHub Settings -> Developer settings -> Personal access tokens -> Generate new token
-            </p>
-        </div>
-        <div style="margin: 20px 0;">
-            <label style="display: block; margin-bottom: 8px; font-weight: 500;">当前Token: ${maskedToken}</label>
-            <input type="password" id="githubTokenInput" placeholder="输入新的 GitHub Token"
-                   style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; box-sizing: border-box;">
-        </div>
-        <div class="modal-buttons">
-            <button class="cancel" onclick="showStageImageManager()">返回</button>
-            <button onclick="saveGithubToken()">保存Token</button>
-        </div>
-    `;
-}
-
-// 保存 Token
-function saveGithubToken() {
-    const input = document.getElementById('githubTokenInput');
-    const token = input.value.trim();
-
-    if (token) {
-        setGithubToken(token);
-        showStatus('GitHub Token 已保存', 'success');
-    }
-
-    showStageImageManager();
-}
-
 // 显示舞台图管理模态框
 export function showStageImageManager() {
     const modal = document.getElementById('stageImageModal');
     if (!modal) return;
 
     const content = modal.querySelector('.modal-content');
-    const hasToken = !!getGithubToken();
 
     content.innerHTML = `
         <div class="modal-header">舞台图管理</div>
@@ -572,7 +371,6 @@ export function showStageImageManager() {
         </div>
         <div class="modal-buttons">
             <button class="cancel" onclick="closeStageImageManager()">关闭</button>
-            <button onclick="showTokenConfigUI()">配置 Token</button>
         </div>
     `;
 
@@ -631,8 +429,6 @@ export function closeStageImageManager() {
 window.showStageImageManager = showStageImageManager;
 window.closeStageImageManager = closeStageImageManager;
 window.handleLibraryUpload = handleLibraryUpload;
-window.saveGithubToken = saveGithubToken;
-window.showTokenConfigUI = showTokenConfig;
 window.switchStageTab = switchTab;
 window.deleteStageImage = deleteFromLibrary;
 window.saveStageConfig = saveStageConfig;

@@ -1,9 +1,10 @@
 // views.js - 视图管理模块
 import { BlockingApp } from '../services/firebase.js';
 import { log, logError } from '../utils/logger.js';
-import { showStatus, getCharacterByName, safeSetProperty, getSceneCharactersList } from '../utils/helpers.js';
+import { showStatus, getCharacterByName, safeSetProperty, getSceneCharactersList, sortMovements } from '../utils/helpers.js';
 import { startEditLine } from './lines.js';
 import { features } from '../config.js';
+import { getStageImageForScene } from './stageImages.js';
 
 // 使用 BlockingApp.state 作为统一状态源（不再使用本地变量）
 
@@ -14,6 +15,158 @@ export function getSelectedCharIndex() { return BlockingApp.state.selectedCharIn
 export function getSelectedCharacter() { return BlockingApp.state.selectedCharacter; }
 export function setSelectedCharacter(char) { BlockingApp.state.selectedCharacter = char; }
 export function getCurrentMode() { return BlockingApp.state.currentMode || 'blocking'; }
+
+function getLineMetaMap(sceneId) {
+    const lines = BlockingApp.data.lines.filter((line) => line.sceneId === sceneId);
+    const map = new Map();
+    lines.forEach((line) => {
+        const lineId = `${line.sceneId}-${line.originalIndex}`;
+        map.set(lineId, line);
+    });
+    return map;
+}
+
+function parseLineIndex(lineId) {
+    if (!lineId || typeof lineId !== 'string') return Number.MAX_SAFE_INTEGER;
+    const parts = lineId.split('-');
+    return parseInt(parts[parts.length - 1], 10) || Number.MAX_SAFE_INTEGER;
+}
+
+function buildSceneMovementSteps(sceneId) {
+    const steps = [];
+    const sceneData = window.blockingData[sceneId] || {};
+
+    Object.keys(sceneData).forEach((charName) => {
+        const charData = sceneData[charName];
+        const movements = charData?.movements ? [...charData.movements] : [];
+        sortMovements(movements);
+        movements.forEach((movement) => {
+            steps.push({
+                charName,
+                movement,
+                movementIndex: charData.movements.indexOf(movement),
+                lineId: movement.lineId || null,
+                charIndex: movement.charIndex ?? null,
+                timestamp: movement.timestamp || 0,
+                isLinked: !!(movement.lineId && movement.charIndex !== undefined)
+            });
+        });
+    });
+
+    steps.sort((a, b) => {
+        if (a.isLinked && b.isLinked) {
+            const lineDiff = parseLineIndex(a.lineId) - parseLineIndex(b.lineId);
+            if (lineDiff !== 0) return lineDiff;
+            const charDiff = (a.charIndex || 0) - (b.charIndex || 0);
+            if (charDiff !== 0) return charDiff;
+            return (a.timestamp || 0) - (b.timestamp || 0);
+        }
+        if (a.isLinked && !b.isLinked) return -1;
+        if (!a.isLinked && b.isLinked) return 1;
+        return (a.timestamp || 0) - (b.timestamp || 0);
+    });
+
+    return steps;
+}
+
+function buildSnapshotSequence(sceneId, steps) {
+    const sceneData = window.blockingData[sceneId] || {};
+    const currentPositions = {};
+
+    Object.keys(sceneData).forEach((charName) => {
+        const initial = sceneData[charName]?.initial;
+        if (initial) {
+            currentPositions[charName] = {
+                x: initial.x,
+                y: initial.y,
+                isInitial: true,
+                movementIndex: -1
+            };
+        }
+    });
+
+    const snapshots = [];
+    // Step 1: 开场（初始位置）
+    snapshots.push({
+        index: 0,
+        step: {
+            charName: null,
+            movement: null,
+            lineId: null,
+            charIndex: null,
+            timestamp: 0,
+            isLinked: false,
+            isInitialSnapshot: true
+        },
+        positions: JSON.parse(JSON.stringify(currentPositions))
+    });
+
+    steps.forEach((step, idx) => {
+        currentPositions[step.charName] = {
+            x: step.movement.x,
+            y: step.movement.y,
+            isInitial: false,
+            movementIndex: step.movementIndex
+        };
+        snapshots.push({
+            index: idx + 1,
+            step,
+            positions: JSON.parse(JSON.stringify(currentPositions))
+        });
+    });
+    return snapshots;
+}
+
+function formatStepTitle(step, lineMetaMap) {
+    if (step.isInitialSnapshot) return '开场初始位置';
+    if (!step.isLinked) return `自由走位 · ${step.charName}`;
+    return `${step.charName} 走位`;
+}
+
+function formatStepSubtitle(step, lineMetaMap) {
+    if (step.isInitialSnapshot) return '开场';
+    if (!step.isLinked) return '未关联台词';
+
+    const line = lineMetaMap.get(step.lineId);
+    if (!line) return '已关联台词';
+
+    const sceneLabel = `第${line.sceneId}场`;
+    const sentenceLabel = `第${(line.originalIndex ?? 0) + 1}句`;
+    const charLabel = `第${(step.charIndex ?? 0) + 1}字`;
+    return `${sceneLabel} · ${sentenceLabel} · ${charLabel}`;
+}
+
+function formatStepLinePreview(step, lineMetaMap) {
+    if (step.isInitialSnapshot) return '开场状态：使用所有已设置初始位置';
+    if (!step.isLinked) return `角色：${step.charName} · 自由走位（未关联台词）`;
+
+    const line = lineMetaMap.get(step.lineId);
+    if (!line) return `角色：${step.charName} · 已关联台词`;
+
+    const speaker = line.character || '舞台指示';
+    const content = line.content || '';
+    const idx = Math.max(0, step.charIndex || 0);
+    const start = Math.max(0, idx - 10);
+    const end = Math.min(content.length, idx + 12);
+    const snippet = content.slice(start, end);
+    return `角色：${speaker} · "${snippet}${end < content.length ? '...' : ''}"`;
+}
+
+function renderSnapshotPreview(snapshot, stageImageSrc) {
+    const markerHtml = Object.entries(snapshot.positions).map(([charName, marker]) => {
+        const character = window.characters.find((c) => c.name === charName);
+        const color = character?.color || '#ddd';
+        const label = character?.name || charName;
+        return `<div class="blocking-step-marker" style="left:${marker.x}%;top:${marker.y}%;background:${color};" title="${label}">${label.slice(0, 1)}</div>`;
+    }).join('');
+
+    return `
+        <div class="blocking-step-preview">
+            <img src="${stageImageSrc}" alt="snapshot">
+            <div class="blocking-step-overlay">${markerHtml}</div>
+        </div>
+    `;
+}
 
 // 模式切换（走位/备注）
 export function switchMode(mode) {
@@ -75,6 +228,7 @@ export function switchView(view) {
     BlockingApp.state.currentView = view;
     document.getElementById('linesViewBtn').classList.toggle('active', view === 'lines');
     document.getElementById('charactersViewBtn').classList.toggle('active', view === 'characters');
+    document.getElementById('blockingViewBtn').classList.toggle('active', view === 'blocking');
 
     // 模式切换只在台词视图显示
     const modeToggle = document.getElementById('modeToggle');
@@ -85,13 +239,72 @@ export function switchView(view) {
     BlockingApp.state.selectedLine = null;
     BlockingApp.state.selectedCharIndex = null;
     BlockingApp.state.selectedCharacter = null;
+    BlockingApp.state.selectedBlockingSnapshot = null;
     BlockingApp.state.addingFreeMovement = false;
 
     if (view === 'lines') {
         displayLines(window.currentScene.id);
-    } else {
+    } else if (view === 'characters') {
         displayCharacters(window.currentScene.id);
+    } else {
+        displayBlockingTimeline(window.currentScene.id);
     }
+
+    if (window.renderStageView) window.renderStageView();
+}
+
+export function displayBlockingTimeline(sceneId) {
+    const container = document.getElementById('panelContent');
+    const movementsPanel = document.getElementById('movementsPanel');
+    if (movementsPanel) {
+        movementsPanel.style.display = 'none';
+    }
+
+    const steps = buildSceneMovementSteps(sceneId);
+    const snapshots = buildSnapshotSequence(sceneId, steps);
+    if (snapshots.length === 0) {
+        container.innerHTML = '<div class="loading">该场次暂无可展示的舞台状态</div>';
+        BlockingApp.state.selectedBlockingSnapshot = null;
+        if (window.renderStageView) window.renderStageView();
+        return;
+    }
+
+    window.blockingTimelineSnapshots = snapshots;
+    const lineMetaMap = getLineMetaMap(sceneId);
+    const stageImageSrc = getStageImageForScene(sceneId) || 'stage-layouts/default-blank.png';
+
+    container.innerHTML = snapshots.map((snapshot, idx) => {
+        const title = formatStepTitle(snapshot.step, lineMetaMap);
+        const subtitle = formatStepSubtitle(snapshot.step, lineMetaMap);
+        const linePreview = formatStepLinePreview(snapshot.step, lineMetaMap);
+        return `
+            <div class="blocking-step-card ${idx === 0 ? 'active' : ''}" data-step-index="${idx}" onclick="selectBlockingStep(${idx})">
+                <div class="blocking-step-header">
+                    <span>Step ${idx + 1}</span>
+                    <span class="blocking-step-subtitle">${subtitle}</span>
+                </div>
+                <div class="blocking-step-title">${title}</div>
+                <div class="blocking-step-line-preview">${linePreview}</div>
+                ${renderSnapshotPreview(snapshot, stageImageSrc)}
+            </div>
+        `;
+    }).join('');
+
+    selectBlockingStep(0);
+}
+
+export function selectBlockingStep(stepIndex) {
+    const snapshots = window.blockingTimelineSnapshots || [];
+    const snapshot = snapshots[stepIndex];
+    if (!snapshot) return;
+
+    document.querySelectorAll('.blocking-step-card').forEach((el) => el.classList.remove('active'));
+    const currentCard = document.querySelector(`.blocking-step-card[data-step-index="${stepIndex}"]`);
+    if (currentCard) currentCard.classList.add('active');
+
+    BlockingApp.state.selectedBlockingSnapshot = snapshot;
+    BlockingApp.state.selectedLine = snapshot.step.lineId || null;
+    BlockingApp.state.selectedCharIndex = snapshot.step.charIndex || 0;
 
     if (window.renderStageView) window.renderStageView();
 }
@@ -194,7 +407,7 @@ function renderLineItem(line, sceneId, deletedLines) {
         const originalContent = line.content || '';
 
         // 检查所有角色的走位数据，找出在这句台词上的标记
-        const markedPositions = new Map();  // charIndex -> { charName, color }
+        const markedPositions = new Map();  // charIndex -> [{ charName, color, timestamp }]
         if (!line.isNew) {
             const sceneData = window.blockingData[sceneId] || {};
             Object.keys(sceneData).forEach(charName => {
@@ -203,10 +416,13 @@ function renderLineItem(line, sceneId, deletedLines) {
                     charData.movements.forEach(m => {
                         if (m.lineId === lineId) {
                             const movingChar = window.characters.find(c => c.name === charName);
-                            markedPositions.set(m.charIndex, {
+                            const existing = markedPositions.get(m.charIndex) || [];
+                            existing.push({
                                 charName: charName,
-                                color: movingChar?.color || '#888'
+                                color: movingChar?.color || '#888',
+                                timestamp: m.timestamp || 0
                             });
+                            markedPositions.set(m.charIndex, existing);
                         }
                     });
                 }
@@ -217,24 +433,30 @@ function renderLineItem(line, sceneId, deletedLines) {
         const lineNotes = window.notes[sceneId]?.[lineId] || [];
         const notePositions = new Map();
         lineNotes.forEach(n => {
-            notePositions.set(n.charIndex, n);
+            const existing = notePositions.get(n.charIndex) || [];
+            existing.push(n);
+            notePositions.set(n.charIndex, existing);
         });
 
         const chars = displayContent.split('').map((char, charIndex) => {
             // 检查是否有走位标记
-            const movementInfo = markedPositions.get(charIndex);
+            const movementInfos = markedPositions.get(charIndex) || [];
             let movementMarker = '';
-            if (movementInfo) {
-                movementMarker = `<span class="movement-marker" style="background: ${movementInfo.color};" title="${movementInfo.charName} 移动" onclick="event.stopPropagation(); deleteMovement('${lineId}', ${charIndex})">${movementInfo.charName}</span>`;
+            if (movementInfos.length > 0) {
+                movementMarker = movementInfos.map((movementInfo) => {
+                    return `<span class="movement-marker" style="background: ${movementInfo.color};" title="${movementInfo.charName} 移动（点击删除）" onclick="event.stopPropagation(); deleteMovement('${lineId}', ${charIndex}, '${movementInfo.charName}', ${movementInfo.timestamp})">${movementInfo.charName}</span>`;
+                }).join('');
             }
 
             // 检查是否有备注
-            const note = notePositions.get(charIndex);
+            const notesAtPosition = notePositions.get(charIndex) || [];
             let noteMarker = '';
-            if (note) {
-                const noteChar = window.characters.find(c => c.name === note.characterId || c.id === note.characterId);
-                const noteColor = noteChar?.color || '#888';
-                noteMarker = `<span class="note-marker" style="background: ${noteColor};" title="点击删除" onclick="event.stopPropagation(); deleteNote('${lineId}', ${charIndex})">[${note.characterId}：${note.note}]</span>`;
+            if (notesAtPosition.length > 0) {
+                noteMarker = notesAtPosition.map((note) => {
+                    const noteChar = window.characters.find(c => c.name === note.characterId || c.id === note.characterId);
+                    const noteColor = noteChar?.color || '#888';
+                    return `<span class="note-marker" style="background: ${noteColor};" title="点击删除" onclick="event.stopPropagation(); deleteNote('${lineId}', ${charIndex}, ${note.createdAt || 0})">[${note.characterId}：${note.note}]</span>`;
+                }).join('');
             }
 
             return `<span onclick="selectCharacter('${lineId}', ${charIndex})">${char}</span>${movementMarker}${noteMarker}`;
@@ -437,7 +659,9 @@ window.switchMode = switchMode;
 window.updateSceneStats = updateSceneStats;
 window.displayLines = displayLines;
 window.displayCharacters = displayCharacters;
+window.displayBlockingTimeline = displayBlockingTimeline;
 window.filterLines = filterLines;
 window.filterCharacters = filterCharacters;
 window.selectCharacter = selectCharacter;
 window.selectCharacterForView = selectCharacterForView;
+window.selectBlockingStep = selectBlockingStep;
