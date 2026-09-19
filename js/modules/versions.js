@@ -113,7 +113,7 @@ export async function saveVersion() {
 
         // 触发 GitHub Actions 同步
         if (window.triggerGitHubSync) {
-            await window.triggerGitHubSync(name);
+            await window.triggerGitHubSync(name, BlockingApp.data.datasetId || 'default');
         }
 
     } catch (error) {
@@ -216,7 +216,7 @@ export function openConfigActorsModal() {
         return;
     }
 
-    header.textContent = `配置场次演员 - ${sceneObj.id} ${sceneObj.name}`;
+    header.textContent = `配置场次演员 - ${sceneObj.name || sceneObj.id}`;
 
     const sceneLines = BlockingApp.data.lines.filter(line => line.sceneId === window.currentScene.id && !line.isStageDirection);
     // 解析合台词角色（如 "A、B、C" -> ["A", "B", "C"]）
@@ -235,6 +235,10 @@ export function openConfigActorsModal() {
         const isConfigured = configuredCharacters.includes(actor.name);
         const checked = configuredCharacters.length > 0 ? isConfigured : hasLines;
 
+        const actorDisplayName = actor.shortName
+            ? `${actor.name}（${actor.shortName}）`
+            : (actor.fullName || actor.name);
+
         return `
             <div class="actor-checkbox-item ${hasLines ? 'has-lines' : ''}">
                 <input
@@ -244,7 +248,7 @@ export function openConfigActorsModal() {
                     ${checked ? 'checked' : ''}
                 >
                 <label for="actor-${actor.id}">
-                    <span>${actor.name} (${actor.fullName})</span>
+                    <span>${actorDisplayName}</span>
                     ${hasLines ? '<span class="actor-badge">有台词</span>' : ''}
                 </label>
             </div>

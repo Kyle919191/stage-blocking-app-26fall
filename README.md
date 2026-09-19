@@ -78,6 +78,28 @@ The other config fields:
 | `GITHUB_REPO` | No | `org/repo` string for GitHub Actions integration. |
 | `features.*` | No | Feature flags to toggle search, GitHub sync, versions, and PDF export. |
 
+### GitHub data snapshot on "保存版本"
+
+This repo includes `.github/workflows/sync-firebase.yml` and `scripts/export_firebase_snapshot.py`.
+When triggered, it exports dataset data nodes (台词/走位/notes/版本等) from Firebase and commits JSON snapshots under:
+
+```text
+snapshots/firebase/dataset-{dataset}/latest/*.json
+snapshots/firebase/dataset-{dataset}/by-version/{timestamp}--{version-name}/*.json
+```
+
+To enable it:
+
+1. Add GitHub repository secrets:
+   - `FIREBASE_DATABASE_URL` (required)
+   - `FIREBASE_DB_AUTH_TOKEN` (optional; use if your DB rules require auth)
+2. Set `GITHUB_REPO` in `js/config.js` (e.g. `owner/repo`).
+3. Set `GITHUB_WORKFLOW_TOKEN` in `js/config.js` to a PAT with permission to trigger workflows on that repo.
+
+Notes:
+- The app dispatches workflow `sync-firebase.yml` and passes `dataset` + `version_name`.
+- Firebase 版本保存成功不依赖 GitHub 同步；GitHub 失败不影响 Firebase 版本本身。
+
 ### Step 4: Run
 
 ```bash

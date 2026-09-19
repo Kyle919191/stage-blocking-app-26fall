@@ -1,0 +1,62 @@
+name: Sync Firebase Data Snapshot
+
+on:
+  workflow_dispatch:
+    inputs:
+      dataset:
+        description: "Dataset id to snapshot (e.g. dev, prod, default)"
+        required: true
+        default: "default"
+      version_name:
+        description: "Version name from app save action"
+        required: false
+        default: "manual-save"
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Export Firebase dataset snapshot
+        env:
+          FIREBASE_DATABASE_URL: ${{ secrets.FIREBASE_DATABASE_URL }}
+          FIREBASE_DB_AUTH_TOKEN: ${{ secrets.FIREBASE_DB_AUTH_TOKEN }}
+        run: |
+          if [ -z "$FIREBASE_DATABASE_URL" ]; then
+            echo "Missing secret: FIREBASE_DATABASE_URL"
+            exit 1
+          fi
+          python3 scripts/export_firebase_snapshot.py \
+            --dataset "${{ inputs.dataset }}" \
+            --version-name "${{ inputs.version_name }}"
+
+      - name: Commit snapshot changes
+        env:
+          DATASET: ${{ inputs.dataset }}
+          VERSION_NAME: ${{ inputs.version_name }}
+        run: |
+          if git diff --quiet && git diff --cached --quiet; then
+            echo "No data changes detected; skipping commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add snapshots/firebase/
+
+          NOW_UTC="$(date -u +"%Y-%m-%d %H:%M:%S UTC")"
+          git commit -m "data snapshot(${DATASET}): ${VERSION_NAME} @ ${NOW_UTC}"
+          git push
