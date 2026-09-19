@@ -526,7 +526,7 @@ export function closeOnboarding() {
 export function setupSceneSelector() {
     const select = document.getElementById('sceneSelect');
     select.innerHTML = scenes.map(scene =>
-        `<option value="${scene.id}">${scene.id} ${scene.name}${scene.subtitle ? ' - ' + scene.subtitle : ''}</option>`
+        `<option value="${scene.id}">${scene.name || scene.id}${scene.subtitle ? ' - ' + scene.subtitle : ''}</option>`
     ).join('');
 }
 

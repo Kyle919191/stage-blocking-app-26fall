@@ -1,44 +1,193 @@
 [
   {
     "id": "1-1",
-    "name": "Scene 1-1",
+    "name": "第一节",
     "subtitle": "",
     "stageMap": "act1/stage.png",
-    "characters": []
+    "characters": [
+      "纳拉科特",
+      "罗杰斯太太",
+      "罗杰斯",
+      "菲利普·隆巴德",
+      "薇拉·克雷松"
+    ]
   },
   {
     "id": "1-2",
-    "name": "Scene 1-2",
+    "name": "第二节",
     "subtitle": "",
     "stageMap": "act1/stage.png",
-    "characters": []
+    "characters": [
+      "安东尼·马斯顿",
+      "薇拉·克雷松",
+      "菲利普·隆巴德",
+      "威廉·布洛尔",
+      "麦克阿瑟将军",
+      "埃米莉·布伦特",
+      "罗杰斯",
+      "劳伦斯·沃格雷弗爵士",
+      "纳拉科特",
+      "阿姆斯特朗医生"
+    ]
   },
   {
     "id": "1-3",
-    "name": "Scene 1-3",
+    "name": "第三节",
     "subtitle": "",
     "stageMap": "act1/stage.png",
-    "characters": []
+    "characters": [
+      "罗杰斯太太",
+      "罗杰斯",
+      "薇拉·克雷松",
+      "埃米莉·布伦特",
+      "菲利普·隆巴德",
+      "阿姆斯特朗医生",
+      "劳伦斯·沃格雷弗爵士",
+      "安东尼·马斯顿",
+      "威廉·布洛尔"
+    ]
   },
   {
-    "id": "2-1",
-    "name": "Scene 2-1",
+    "id": "1-4",
+    "name": "第四节",
     "subtitle": "",
-    "stageMap": "act2/stage.png",
-    "characters": []
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "阿姆斯特朗医生",
+      "威廉·布洛尔",
+      "薇拉·克雷松",
+      "麦克阿瑟将军",
+      "菲利普·隆巴德",
+      "劳伦斯·沃格雷弗爵士",
+      "安东尼·马斯顿",
+      "罗杰斯太太",
+      "罗杰斯",
+      "埃米莉·布伦特"
+    ]
   },
   {
-    "id": "2-2",
-    "name": "Scene 2-2",
+    "id": "1-5",
+    "name": "第五节",
     "subtitle": "",
-    "stageMap": "act2/stage.png",
-    "characters": []
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "劳伦斯·沃格雷弗爵士",
+      "罗杰斯",
+      "麦克阿瑟将军",
+      "威廉·布洛尔",
+      "菲利普·隆巴德",
+      "安东尼·马斯顿",
+      "埃米莉·布伦特",
+      "薇拉·克雷松",
+      "阿姆斯特朗医生"
+    ]
   },
   {
-    "id": "2-3",
-    "name": "Scene 2-3",
+    "id": "1-6",
+    "name": "第六节",
     "subtitle": "",
-    "stageMap": "act2/stage.png",
-    "characters": []
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "阿姆斯特朗医生",
+      "薇拉·克雷松",
+      "威廉·布洛尔",
+      "劳伦斯·沃格雷弗爵士",
+      "埃米莉·布伦特",
+      "麦克阿瑟将军",
+      "罗杰斯",
+      "菲利普·隆巴德"
+    ]
+  },
+  {
+    "id": "1-7",
+    "name": "第六小节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "劳伦斯·沃格雷弗爵士",
+      "薇拉·克雷松",
+      "埃米莉·布伦特",
+      "麦克阿瑟将军",
+      "菲利普·隆巴德",
+      "罗杰斯",
+      "威廉·布洛尔",
+      "阿姆斯特朗医生"
+    ]
+  },
+  {
+    "id": "1-8",
+    "name": "第七节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "威廉·布洛尔",
+      "劳伦斯·沃格雷弗爵士",
+      "薇拉·克雷松",
+      "菲利普·隆巴德",
+      "埃米莉·布伦特",
+      "罗杰斯",
+      "阿姆斯特朗医生"
+    ]
+  },
+  {
+    "id": "1-9",
+    "name": "第八节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "阿姆斯特朗医生",
+      "劳伦斯·沃格雷弗爵士",
+      "威廉·布洛尔",
+      "薇拉·克雷松",
+      "菲利普·隆巴德"
+    ]
+  },
+  {
+    "id": "1-10",
+    "name": "第九节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "菲利普·隆巴德",
+      "阿姆斯特朗医生",
+      "威廉·布洛尔",
+      "劳伦斯·沃格雷弗爵士",
+      "薇拉·克雷松"
+    ]
+  },
+  {
+    "id": "1-11",
+    "name": "第十节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "威廉·布洛尔",
+      "阿姆斯特朗医生",
+      "薇拉·克雷松",
+      "菲利普·隆巴德",
+      "劳伦斯·沃格雷弗爵士"
+    ]
+  },
+  {
+    "id": "1-12",
+    "name": "第十一节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "菲利普·隆巴德",
+      "薇拉·克雷松",
+      "威廉·布洛尔"
+    ]
+  },
+  {
+    "id": "1-13",
+    "name": "第十二节",
+    "subtitle": "",
+    "stageMap": "act1/stage.png",
+    "characters": [
+      "薇拉·克雷松",
+      "菲利普·隆巴德",
+      "劳伦斯·沃格雷弗爵士"
+    ]
   }
 ]

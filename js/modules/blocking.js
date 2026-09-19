@@ -45,6 +45,13 @@ export function setAddingFreeMovement(val) { BlockingApp.state.addingFreeMovemen
 export function getSelectedCharacter() { return BlockingApp.state.selectedCharacter; }
 export function setSelectedCharacter(char) { BlockingApp.state.selectedCharacter = char; }
 
+function getCharacterShortName(charName) {
+    const character = window.characters?.find(c => c.name === charName);
+    if (character?.shortName) return character.shortName;
+    if (character?.name) return character.name.slice(0, 1);
+    return String(charName || '').slice(0, 1);
+}
+
 // 开始设置初始位置 - 先选角色再选位置
 export function startSetInitial() {
     // 先弹出模态框选择角色
@@ -76,7 +83,7 @@ function showInitialCharacterModal() {
         return `
             <div class="character-option ${hasInitial ? 'disabled' : ''}"
                  ${hasInitial ? 'style="pointer-events: none;"' : `onclick="selectInitialCharacter('${charName}')"`}>
-                <span class="character-badge" style="background: ${character.color}">${character.name}</span>
+                <span class="character-badge" style="background: ${character.color}">${getCharacterShortName(charName)}</span>
                 <span>${character.fullName}</span>
                 ${hasInitial ? '<span class="already-set">✓ 已设置</span>' : ''}
             </div>
@@ -230,7 +237,7 @@ export function showCharacterModal(title, showStageToggle, showOnlyWithoutInitia
         return `
             <div class="character-option ${disabled ? 'disabled' : ''}"
                  ${disabled ? 'onclick="return false;" style="pointer-events: none;"' : `onclick="selectCharacterAction('${charName}')"`}>
-                <span class="character-badge" style="background: ${character.color}">${character.name}</span>
+                <span class="character-badge" style="background: ${character.color}">${getCharacterShortName(charName)}</span>
                 <span>${character.fullName}</span>
             </div>
         `;
@@ -677,7 +684,9 @@ export function drawMarker(svg, x, y, color, label, isStart = false, charName = 
     text.setAttribute('font-size', isStart ? '10' : '8');
     text.setAttribute('font-weight', 'bold');
     text.setAttribute('pointer-events', 'none');
-    text.textContent = label;
+    const character = charName ? window.characters?.find(c => c.name === charName) : null;
+    const shortName = character?.shortName || character?.name?.slice(0, 1) || (label ? String(label).slice(0, 1) : '');
+    text.textContent = shortName;
 
     g.appendChild(circle);
     g.appendChild(text);

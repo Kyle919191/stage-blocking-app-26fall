@@ -16,6 +16,14 @@ export function getSelectedCharacter() { return BlockingApp.state.selectedCharac
 export function setSelectedCharacter(char) { BlockingApp.state.selectedCharacter = char; }
 export function getCurrentMode() { return BlockingApp.state.currentMode || 'blocking'; }
 
+function getCharacterShortName(charName) {
+    const character = window.characters?.find((c) => c.name === charName);
+    if (character?.shortName) return character.shortName;
+    if (character?.name) return character.name.slice(0, 1);
+    if (!charName) return '';
+    return String(charName).slice(0, 1);
+}
+
 function getLineMetaMap(sceneId) {
     const lines = BlockingApp.data.lines.filter((line) => line.sceneId === sceneId);
     const map = new Map();
@@ -157,7 +165,8 @@ function renderSnapshotPreview(snapshot, stageImageSrc) {
         const character = window.characters.find((c) => c.name === charName);
         const color = character?.color || '#ddd';
         const label = character?.name || charName;
-        return `<div class="blocking-step-marker" style="left:${marker.x}%;top:${marker.y}%;background:${color};" title="${label}">${label.slice(0, 1)}</div>`;
+        const shortName = getCharacterShortName(charName);
+        return `<div class="blocking-step-marker" style="left:${marker.x}%;top:${marker.y}%;background:${color};" title="${label}">${shortName}</div>`;
     }).join('');
 
     return `
@@ -444,7 +453,8 @@ function renderLineItem(line, sceneId, deletedLines) {
             let movementMarker = '';
             if (movementInfos.length > 0) {
                 movementMarker = movementInfos.map((movementInfo) => {
-                    return `<span class="movement-marker" style="background: ${movementInfo.color};" title="${movementInfo.charName} 移动（点击删除）" onclick="event.stopPropagation(); deleteMovement('${lineId}', ${charIndex}, '${movementInfo.charName}', ${movementInfo.timestamp})">${movementInfo.charName}</span>`;
+                    const shortName = getCharacterShortName(movementInfo.charName);
+                    return `<span class="movement-marker" style="background: ${movementInfo.color};" title="${movementInfo.charName} 移动（点击删除）" onclick="event.stopPropagation(); deleteMovement('${lineId}', ${charIndex}, '${movementInfo.charName}', ${movementInfo.timestamp})">${shortName}</span>`;
                 }).join('');
             }
 
@@ -471,8 +481,8 @@ function renderLineItem(line, sceneId, deletedLines) {
                 <button class="delete-line-btn" onclick="event.stopPropagation(); deleteLine('${lineId}')">删除</button>
             </div>
             <div class="line-character">
-                ${character ? `<span class="character-badge" style="background: ${character.color}">${character.name}</span>` : ''}
-                ${line.character}
+                ${character ? `<span class="character-badge" style="background: ${character.color}">${getCharacterShortName(character.name)}</span>` : ''}
+                ${character?.fullName || line.character}
             </div>
             <div class="line-content" data-original-content="${originalContent.replace(/"/g, '&quot;')}">${chars}</div>
         `;
@@ -563,10 +573,10 @@ export function displayCharacters(sceneId) {
 
         return `
             <div class="character-item" data-char-name="${charName}" onclick="selectCharacterForView('${charName}')">
-                <span class="character-badge" style="background: ${character.color}">${character.name}</span>
+                <span class="character-badge" style="background: ${character.color}">${getCharacterShortName(character.name)}</span>
                 <div class="character-info">
-                    <div class="character-name">${character.name}</div>
-                    <div class="character-full-name">${character.fullName}</div>
+                    <div class="character-name">${getCharacterShortName(character.name)}</div>
+                    <div class="character-full-name">${character.fullName || character.name}</div>
                     <div class="character-stats">
                         ${hasInitial ? '已设置初始位置' : '未设置初始位置'}
                         · ${movementCount} 次移动

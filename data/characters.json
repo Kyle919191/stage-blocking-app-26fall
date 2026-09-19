@@ -1,74 +1,79 @@
 [
   {
-    "id": "a",
-    "name": "A",
-    "fullName": "Character A",
+    "id": "c1",
+    "name": "罗杰斯",
+    "fullName": "罗杰斯(罗)",
+    "shortName": "罗",
     "color": "#fde2e4"
   },
   {
-    "id": "b",
-    "name": "B",
-    "fullName": "Character B",
+    "id": "c2",
+    "name": "纳拉科特",
+    "fullName": "纳拉科特(纳)",
+    "shortName": "纳",
     "color": "#c5dedd"
   },
   {
-    "id": "c",
-    "name": "C",
-    "fullName": "Character C",
+    "id": "c3",
+    "name": "罗杰斯太太",
+    "fullName": "罗杰斯太太(太)",
+    "shortName": "太",
     "color": "#bcd4e6"
   },
   {
-    "id": "d",
-    "name": "D",
-    "fullName": "Character D",
+    "id": "c4",
+    "name": "薇拉·克雷松",
+    "fullName": "薇拉·克雷松(薇)",
+    "shortName": "薇",
     "color": "#fff1e6"
   },
   {
-    "id": "e",
-    "name": "E",
-    "fullName": "Character E",
+    "id": "c5",
+    "name": "菲利普·隆巴德",
+    "fullName": "菲利普·隆巴德(隆)",
+    "shortName": "隆",
     "color": "#dbe7e4"
   },
   {
-    "id": "f",
-    "name": "F",
-    "fullName": "Character F",
+    "id": "c6",
+    "name": "安东尼·马斯顿",
+    "fullName": "安东尼·马斯顿(安)",
+    "shortName": "安",
     "color": "#eddcd2"
   },
   {
-    "id": "g",
-    "name": "G",
-    "fullName": "Character G",
+    "id": "c7",
+    "name": "威廉·布洛尔",
+    "fullName": "威廉·布洛尔(布)",
+    "shortName": "布",
     "color": "#e8d5b7"
   },
   {
-    "id": "h",
-    "name": "H",
-    "fullName": "Character H",
+    "id": "c8",
+    "name": "麦克阿瑟将军",
+    "fullName": "麦克阿瑟将军(麦)",
+    "shortName": "麦",
     "color": "#d6e2e9"
   },
   {
-    "id": "i",
-    "name": "I",
-    "fullName": "Character I",
+    "id": "c9",
+    "name": "埃米莉·布伦特",
+    "fullName": "埃米莉·布伦特(埃)",
+    "shortName": "埃",
     "color": "#d4c4fb"
   },
   {
-    "id": "j",
-    "name": "J",
-    "fullName": "Character J",
+    "id": "c10",
+    "name": "劳伦斯·沃格雷弗爵士",
+    "fullName": "劳伦斯·沃格雷弗爵士(沃)",
+    "shortName": "沃",
     "color": "#99c1de"
   },
   {
-    "id": "k",
-    "name": "K",
-    "fullName": "Character K",
+    "id": "c11",
+    "name": "阿姆斯特朗医生",
+    "fullName": "阿姆斯特朗医生(医)",
+    "shortName": "医",
     "color": "#f0efeb"
-  },
-  {
-    "id": "l",
-    "name": "L",
-    "fullName": "Character L",
-    "color": "#fad2e1"
   }
 ]
