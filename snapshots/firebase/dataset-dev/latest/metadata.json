@@ -1,0 +1,18 @@
+{
+  "dataset": "dev",
+  "versionName": "first-github-test",
+  "exportedAtUtc": "2026-09-19T16-59-39Z",
+  "databaseUrl": "https://rctc-fall2026-default-rtdb.firebaseio.com",
+  "paths": {
+    "blockingData": "datasets/dev/blockingData",
+    "dialogueEdits": "datasets/dev/dialogueEdits",
+    "lineOperations": "datasets/dev/lineOperations",
+    "notes": "datasets/dev/notes",
+    "versions": "datasets/dev/versions",
+    "scenes": "datasets/dev/scenes",
+    "sceneStageMap": "datasets/dev/sceneStageMap",
+    "stageLibrary": "datasets/dev/stageLibrary",
+    "commonActions": "datasets/dev/commonActions",
+    "scriptData": "datasets/dev/scriptData"
+  }
+}
