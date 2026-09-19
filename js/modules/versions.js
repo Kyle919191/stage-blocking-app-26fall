@@ -107,7 +107,7 @@ export async function saveVersion() {
         const completeVersionData = collectCompleteVersionData(baseVersionData);
 
         await versionsRef.child(versionId).set(baseVersionData);
-        showStatus('版本已保存，正在同步到 GitHub...', 'info');
+        showStatus('版本已保存到 Firebase', 'success');
 
         closeSaveVersionModal();
 

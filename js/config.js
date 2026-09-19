@@ -29,12 +29,12 @@ export const VERSION = 'v4.5';
 // Feature flags - control optional features
 export const features = {
     search: false,      // Search functionality
-    github: false,      // GitHub integration (sync via Actions)
+    github: true,       // GitHub integration (sync via Actions)
     versions: true,     // Version management
     pdfExport: true     // PDF export
 };
 
 // GitHub Actions trigger configuration
-// Note: This token only has permission to trigger workflows, cannot read/write code
-export const GITHUB_WORKFLOW_TOKEN = 'YOUR_GITHUB_PAT_TOKEN';
-export const GITHUB_REPO = 'YOUR_ORG/YOUR_REPO';
+// Frontend no longer stores PAT. GitHub trigger now goes through /api/trigger-sync on server.
+export const GITHUB_WORKFLOW_TOKEN = 'SERVER_SIDE_ONLY';
+export const GITHUB_REPO = 'SERVER_SIDE_ONLY';

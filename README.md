@@ -93,11 +93,16 @@ To enable it:
 1. Add GitHub repository secrets:
    - `FIREBASE_DATABASE_URL` (required)
    - `FIREBASE_DB_AUTH_TOKEN` (optional; use if your DB rules require auth)
-2. Set `GITHUB_REPO` in `js/config.js` (e.g. `owner/repo`).
-3. Set `GITHUB_WORKFLOW_TOKEN` in `js/config.js` to a PAT with permission to trigger workflows on that repo.
+2. In Vercel Project Settings -> Environment Variables, set:
+   - `GITHUB_REPO` (e.g. `owner/repo`)
+   - `GITHUB_WORKFLOW_TOKEN` (PAT that can dispatch Actions workflows)
+3. (Optional hardening) set `SYNC_API_KEY` in Vercel env, then in browser set:
+   - `localStorage.setItem('syncApiKey', 'your-key')`
+   so frontend calls include `x-sync-key`.
 
 Notes:
-- The app dispatches workflow `sync-firebase.yml` and passes `dataset` + `version_name`.
+- The app dispatches `POST /api/trigger-sync` and the server dispatches workflow `sync-firebase.yml`.
+- Frontend no longer stores GitHub PAT.
 - Firebase 版本保存成功不依赖 GitHub 同步；GitHub 失败不影响 Firebase 版本本身。
 
 ### Step 4: Run

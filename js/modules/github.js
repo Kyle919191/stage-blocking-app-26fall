@@ -1,14 +1,6 @@
-// github.js - GitHub Actions 触发模块
-import { GITHUB_WORKFLOW_TOKEN, GITHUB_REPO } from '../config.js';
+// github.js - GitHub Actions 触发模块（通过后端 API）
 import { showStatus } from '../utils/helpers.js';
 import { log, logError } from '../utils/logger.js';
-
-function isPlaceholderValue(value) {
-    if (!value || typeof value !== 'string') return true;
-    const trimmed = value.trim();
-    if (!trimmed) return true;
-    return trimmed.includes('YOUR_') || trimmed.includes('your-') || trimmed.includes('example');
-}
 
 /**
  * 触发 GitHub Actions workflow 同步 Firebase 数据
@@ -17,45 +9,38 @@ function isPlaceholderValue(value) {
  * @returns {Promise<boolean>} 是否触发成功
  */
 export async function triggerGitHubSync(versionName, datasetId = 'default') {
-    const token = (GITHUB_WORKFLOW_TOKEN || '').trim();
-    const repo = (GITHUB_REPO || '').trim();
     const dataset = (datasetId || 'default').trim() || 'default';
-
-    if (isPlaceholderValue(token) || isPlaceholderValue(repo)) {
-        log('GitHub 同步未配置（Token 或 Repo 仍为占位符）');
-        return false;
-    }
 
     try {
         log('🔄 触发 GitHub Actions 同步...');
 
-        const response = await fetch(
-            `https://api.github.com/repos/${repo}/actions/workflows/sync-firebase.yml/dispatches`,
-            {
-                method: 'POST',
-                headers: {
-                    'Authorization': `token ${token}`,
-                    'Accept': 'application/vnd.github.v3+json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ref: 'main',
-                    inputs: {
-                        version_name: versionName || 'Auto sync',
-                        dataset
-                    }
-                })
-            }
-        );
+        const syncKey = window.localStorage.getItem('syncApiKey') || '';
+        const response = await fetch('/api/trigger-sync', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                ...(syncKey ? { 'x-sync-key': syncKey } : {})
+            },
+            body: JSON.stringify({
+                version_name: versionName || 'Auto sync',
+                dataset
+            })
+        });
 
-        if (response.status === 204) {
+        if (response.ok) {
             log('✅ GitHub Actions 同步已触发');
             showStatus('已触发 GitHub 同步', 'success');
             return true;
         } else {
-            const errorText = await response.text();
-            logError('GitHub API 响应:', response.status, errorText);
-            showStatus('GitHub 同步触发失败', 'error');
+            const payload = await response.json().catch(() => ({}));
+            logError('GitHub 同步接口响应:', response.status, payload);
+            if (response.status === 401) {
+                showStatus('GitHub 同步鉴权失败：请设置 syncApiKey（若服务端要求）', 'error');
+            } else if (payload?.error === 'server_not_configured') {
+                showStatus('GitHub 同步未配置：请在 Vercel 设置 GITHUB_WORKFLOW_TOKEN/GITHUB_REPO', 'warning');
+            } else {
+                showStatus('GitHub 同步触发失败', 'error');
+            }
             return false;
         }
     } catch (error) {
