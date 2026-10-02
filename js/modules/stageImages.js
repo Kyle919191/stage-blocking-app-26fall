@@ -148,7 +148,13 @@ export async function uploadToLibrary(files, names = []) {
             results.push({ success: true, name: customName, key: imageKey });
         } catch (error) {
             logError(`上传 ${customName} 失败:`, error);
-            results.push({ success: false, name: customName, error: error.message });
+            const message = String(error?.message || error || '');
+            const permissionDenied = message.includes('Permission denied');
+            results.push({
+                success: false,
+                name: customName,
+                error: permissionDenied ? 'Firebase 写入权限不足（Permission denied）' : message
+            });
         }
     }
 
@@ -159,7 +165,13 @@ export async function uploadToLibrary(files, names = []) {
     if (successCount === files.length) {
         showStatus(`成功上传 ${successCount} 张图片`, 'success');
     } else {
-        showStatus(`上传完成: ${successCount}/${files.length} 成功`, 'warning');
+        const failed = results.filter(r => !r.success);
+        const hasPermissionIssue = failed.some(r => String(r.error || '').includes('Permission denied') || String(r.error || '').includes('权限不足'));
+        if (hasPermissionIssue) {
+            showStatus('上传失败：Firebase 权限不足（Permission denied）。请在 Firebase Rules 开启写权限后重试。', 'error');
+        } else {
+            showStatus(`上传完成: ${successCount}/${files.length} 成功`, 'warning');
+        }
     }
 
     return results;
