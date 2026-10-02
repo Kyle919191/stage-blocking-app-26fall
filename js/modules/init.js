@@ -264,7 +264,8 @@ export async function loadStageImages() {
         { key: 'ktv', name: 'layout_8', path: 'stage-layouts/layout_8.png' },
         { key: 'deep_travel_v1', name: 'layout_9', path: 'stage-layouts/layout_9.png' },
         { key: 'deep_travel_v2', name: 'layout_10', path: 'stage-layouts/layout_10.png' },
-        { key: 'sweet_sour_bitter_spicy', name: 'layout_11', path: 'stage-layouts/layout_11.png' }
+        { key: 'sweet_sour_bitter_spicy', name: 'layout_11', path: 'stage-layouts/layout_11.png' },
+        { key: 'custom_20261002_153241', name: 'layout_custom_20261002', path: 'Screenshot 2026-10-02 at 15.32.41.png' }
     ];
 
     // 加载默认幕图
