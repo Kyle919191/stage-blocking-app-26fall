@@ -746,13 +746,15 @@ body {
 .stage-wrapper {
     position: relative;
     display: inline-block;
+    width: min(100%, 1200px);
     transform-origin: top center;
     transition: transform 0.2s ease;
 }
 
 .stage-image {
+    width: 100%;
     max-height: calc(100vh - 280px);
-    width: auto;
+    height: auto;
     display: block;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
