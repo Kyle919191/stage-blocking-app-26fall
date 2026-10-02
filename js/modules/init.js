@@ -360,33 +360,34 @@ function setupFirebaseListener() {
     const blockingListener = blockingRef.on('value', (snapshot) => {
         if (BlockingApp.state.isLoadingFromFirebase) return;
 
-        const data = snapshot.val();
-        if (data) {
-            BlockingApp.state.isLoadingFromFirebase = true;
-            blockingData = data;
-            window.blockingData = blockingData;
+        // NOTE: Firebase returns null for empty objects at path root.
+        // We must still propagate this, otherwise restoring an "empty" version
+        // appears to do nothing in UI.
+        const data = snapshot.val() || {};
+        BlockingApp.state.isLoadingFromFirebase = true;
+        blockingData = data;
+        window.blockingData = blockingData;
 
-            const sceneId = getCurrentSceneId();
+        const sceneId = getCurrentSceneId();
 
-            if (BlockingApp.state.currentView === 'lines') {
-                if (sceneId && window.displayLines) {
-                    window.displayLines(sceneId);
-                }
-                if (window.renderMarkers) {
-                    window.renderMarkers();
-                }
-            } else if (BlockingApp.state.currentView === 'characters') {
-                if (sceneId && window.displayCharacters) {
-                    window.displayCharacters(sceneId);
-                }
-                if (BlockingApp.state.selectedCharacter && window.renderCharacterTrajectory) {
-                    window.renderCharacterTrajectory();
-                }
+        if (BlockingApp.state.currentView === 'lines') {
+            if (sceneId && window.displayLines) {
+                window.displayLines(sceneId);
             }
-
-            updateSaveStatus('synced');
-            BlockingApp.state.isLoadingFromFirebase = false;
+            if (window.renderMarkers) {
+                window.renderMarkers();
+            }
+        } else if (BlockingApp.state.currentView === 'characters') {
+            if (sceneId && window.displayCharacters) {
+                window.displayCharacters(sceneId);
+            }
+            if (BlockingApp.state.selectedCharacter && window.renderCharacterTrajectory) {
+                window.renderCharacterTrajectory();
+            }
         }
+
+        updateSaveStatus('synced');
+        BlockingApp.state.isLoadingFromFirebase = false;
     });
 
     BlockingApp.firebase.listeners.push({
