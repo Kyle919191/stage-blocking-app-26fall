@@ -106,7 +106,7 @@ export async function saveVersion() {
 
         const completeVersionData = collectCompleteVersionData(baseVersionData);
 
-        await versionsRef.child(versionId).set(baseVersionData);
+        await versionsRef.child(versionId).set(completeVersionData);
         showStatus('版本已保存到 Firebase', 'success');
 
         closeSaveVersionModal();
@@ -133,38 +133,80 @@ export async function restoreVersion(versionId) {
         const version = snapshot.val();
 
         if (version && version.data) {
+            const currentSnapshot = JSON.stringify({
+                data: window.blockingData || {},
+                dialogueEdits: window.dialogueEdits || {},
+                lineOperations: window.lineOperations || { added: {}, deleted: {} },
+                notes: window.notes || {}
+            });
+            const targetSnapshot = JSON.stringify({
+                data: version.data || {},
+                dialogueEdits: version.dialogueEdits || {},
+                lineOperations: version.lineOperations || { added: {}, deleted: {} },
+                notes: version.notes || {}
+            });
+            if (currentSnapshot === targetSnapshot) {
+                showStatus('当前已是该版本，无需恢复', 'info');
+                return;
+            }
+
             BlockingApp.state.isLoadingFromFirebase = true;
 
             window.blockingData = JSON.parse(JSON.stringify(version.data));
+            BlockingApp.data.blockingData = window.blockingData;
             await blockingRef.set(window.blockingData);
 
             if (version.dialogueEdits) {
                 window.dialogueEdits = JSON.parse(JSON.stringify(version.dialogueEdits));
+                BlockingApp.data.dialogueEdits = window.dialogueEdits;
                 await dialogueEditsRef.set(window.dialogueEdits);
             } else {
                 window.dialogueEdits = {};
+                BlockingApp.data.dialogueEdits = {};
                 await dialogueEditsRef.remove();
             }
 
             if (version.lineOperations) {
                 window.lineOperations = JSON.parse(JSON.stringify(version.lineOperations));
+                BlockingApp.data.lineOperations = window.lineOperations;
                 await lineOperationsRef.set(window.lineOperations);
             } else {
                 window.lineOperations = { added: {}, deleted: {} };
+                BlockingApp.data.lineOperations = window.lineOperations;
                 await lineOperationsRef.remove();
             }
 
             if (version.notes) {
                 window.notes = JSON.parse(JSON.stringify(version.notes));
+                BlockingApp.data.notes = window.notes;
                 await notesRef.set(window.notes);
             } else {
                 window.notes = {};
+                BlockingApp.data.notes = {};
                 await notesRef.remove();
+            }
+
+            // 可选恢复：场次演员配置（若该版本包含）
+            if (version.sceneCharacters && typeof version.sceneCharacters === 'object') {
+                const updates = {};
+                BlockingApp.data.scenes.forEach((scene) => {
+                    const restored = version.sceneCharacters[scene.id];
+                    if (Array.isArray(restored)) {
+                        scene.characters = restored;
+                        updates[scene.id] = { characters: restored };
+                    }
+                });
+                if (Object.keys(updates).length > 0) {
+                    await scenesRef.update(updates);
+                }
             }
 
             if (window.currentScene) {
                 if (window.displayLines) window.displayLines(window.currentScene.id);
                 if (window.renderStageView) window.renderStageView();
+                if (BlockingApp.state.currentView === 'characters' && window.displayCharacters) {
+                    window.displayCharacters(window.currentScene.id);
+                }
             }
 
             BlockingApp.state.isLoadingFromFirebase = false;
