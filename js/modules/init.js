@@ -251,46 +251,10 @@ export async function loadStageImages() {
     const acts = ['1', '2', '3', '4'];
     const stageImages = {};
 
-    // 图片库列表（所有可用的stage-layouts）
+    // 图片库列表（仓库中实际存在的可用图片）
     const libraryImages = [
-        { key: 'default_blank', name: 'default-blank', path: 'stage-layouts/default-blank.png' },
-        { key: 'identity_1p_v1', name: 'layout_1', path: 'stage-layouts/layout_1.png' },
-        { key: 'identity_1p_v2', name: 'layout_2', path: 'stage-layouts/layout_2.png' },
-        { key: 'identity_4p_v1', name: 'layout_3', path: 'stage-layouts/layout_3.png' },
-        { key: 'identity_4p_v2', name: 'layout_4', path: 'stage-layouts/layout_4.png' },
-        { key: 'xiaolin', name: 'layout_5', path: 'stage-layouts/layout_5.png' },
-        { key: 'democracy', name: 'layout_6', path: 'stage-layouts/layout_6.png' },
-        { key: 'airplane', name: 'layout_7', path: 'stage-layouts/layout_7.png' },
-        { key: 'ktv', name: 'layout_8', path: 'stage-layouts/layout_8.png' },
-        { key: 'deep_travel_v1', name: 'layout_9', path: 'stage-layouts/layout_9.png' },
-        { key: 'deep_travel_v2', name: 'layout_10', path: 'stage-layouts/layout_10.png' },
-        { key: 'sweet_sour_bitter_spicy', name: 'layout_11', path: 'stage-layouts/layout_11.png' },
         { key: 'custom_20261002_153241', name: 'layout_custom_20261002', path: 'Screenshot 2026-10-02 at 15.32.41.png' }
     ];
-
-    // 加载默认幕图
-    for (const act of acts) {
-        try {
-            let response = await fetch(`stage-layouts/act${act}/stage.png`);
-            if (!response.ok) {
-                // 如果没有专门的幕图，使用默认空白图
-                response = await fetch('stage-layouts/default-blank.png');
-            }
-
-            if (response.ok) {
-                const blob = await response.blob();
-                const base64 = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result);
-                    reader.readAsDataURL(blob);
-                });
-                stageImages[act] = base64;
-                log(`    ✓ 第${act}幕舞台图加载成功`);
-            }
-        } catch (error) {
-            logError(`    ✗ 第${act}幕舞台图加载失败:`, error);
-        }
-    }
 
     // 初始化图片库
     stageImages.library = {};
@@ -315,6 +279,18 @@ export async function loadStageImages() {
             }
         } catch (error) {
             logError(`    ✗ 图片库: ${img.name} 加载失败:`, error);
+        }
+    }
+
+    // 仓库中的旧 stage-layouts 已失效：默认幕图统一回退到首张可用图片
+    const libraryValues = Object.values(stageImages.library);
+    const fallbackBase64 = libraryValues[0]?.base64 || null;
+    for (const act of acts) {
+        stageImages[act] = fallbackBase64;
+        if (fallbackBase64) {
+            log(`    ✓ 第${act}幕默认舞台图已使用回退图片`);
+        } else {
+            log(`    ⚠️ 第${act}幕默认舞台图为空（请在图片库上传至少一张图）`);
         }
     }
 
