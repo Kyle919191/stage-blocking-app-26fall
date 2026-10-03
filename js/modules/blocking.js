@@ -38,6 +38,12 @@ let draggingHandle = null;  // 'nw' | 'n' | 'ne' | 'e' | 'se' | 's' | 'sw' | 'w'
 let boundingBox = null;  // { minX, minY, maxX, maxY }
 let initialBoundingBox = null;  // 拖拽开始时的边界框（不随拖拽变化）
 
+// 道具框状态（场景中的桌子/道具）
+let isAddingPropBox = false;
+let drawingPropBox = null;  // { startX, startY, endX, endY }
+let draggingPropBox = null; // { id, startMouseX, startMouseY, startX, startY }
+let resizingPropBox = null; // { id, startMouseX, startMouseY, startWidth, startHeight }
+
 // 导出状态获取器（从 BlockingApp.state 读取）
 export function isSettingInitial() { return BlockingApp.state.settingInitial; }
 export function isAddingFreeMovement() { return BlockingApp.state.addingFreeMovement; }
@@ -50,6 +56,22 @@ function getCharacterShortName(charName) {
     if (character?.shortName) return character.shortName;
     if (character?.name) return character.name.slice(0, 1);
     return String(charName || '').slice(0, 1);
+}
+
+function getSceneProps(sceneId) {
+    if (!sceneId) return [];
+    const props = window.blockingData?.[sceneId]?.__props__;
+    return Array.isArray(props) ? props : [];
+}
+
+function ensureSceneProps(sceneId) {
+    if (!window.blockingData[sceneId]) {
+        window.blockingData[sceneId] = {};
+    }
+    if (!Array.isArray(window.blockingData[sceneId].__props__)) {
+        window.blockingData[sceneId].__props__ = [];
+    }
+    return window.blockingData[sceneId].__props__;
 }
 
 // 开始设置初始位置 - 先选角色再选位置
@@ -132,6 +154,11 @@ export function confirmInitialCharacter() {
 
 // 处理舞台点击
 export function handleStageClick(e) {
+    // 道具框模式下由 mousedown/mousemove/mouseup 完整处理
+    if (isAddingPropBox || drawingPropBox) {
+        return;
+    }
+
     // 优先处理：设置初始位置、添加走位（已选择字符时）
     // 这些操作优先于走位点的点击处理
     if (BlockingApp.state.settingInitial) {
@@ -162,6 +189,72 @@ export function handleStageClick(e) {
     if (BlockingApp.state.currentView === 'lines') {
         showStatus('请先选择台词中的一个字', 'warning');
     }
+}
+
+// 开始绘制道具框（按下并拖拽）
+export function startAddPropBox() {
+    if (!window.currentScene) {
+        showStatus('请先选择一个场次', 'warning');
+        return;
+    }
+    isAddingPropBox = true;
+    drawingPropBox = null;
+    showStatus('道具框模式：按下并拖拽绘制，松开完成', 'info');
+}
+
+export function handleStageMouseDown(e, svg) {
+    if (!isAddingPropBox || !svg) return;
+    const coords = getRelativeCoordinates(e, svg);
+    drawingPropBox = {
+        startX: coords.x,
+        startY: coords.y,
+        endX: coords.x,
+        endY: coords.y
+    };
+    e.preventDefault();
+    e.stopPropagation();
+    renderStageView();
+}
+
+export function handlePropBoxDrawing(e, svg) {
+    if (!drawingPropBox || !svg) return;
+    const coords = getRelativeCoordinates(e, svg);
+    drawingPropBox.endX = coords.x;
+    drawingPropBox.endY = coords.y;
+    renderStageView();
+}
+
+export function endPropBoxDrawing() {
+    if (!drawingPropBox || !window.currentScene) return;
+
+    const { startX, startY, endX, endY } = drawingPropBox;
+    const minX = Math.max(0, Math.min(startX, endX));
+    const minY = Math.max(0, Math.min(startY, endY));
+    const width = Math.min(100 - minX, Math.abs(endX - startX));
+    const height = Math.min(100 - minY, Math.abs(endY - startY));
+
+    drawingPropBox = null;
+    isAddingPropBox = false;
+
+    if (width < 1 || height < 1) {
+        showStatus('道具框太小，已取消', 'warning');
+        renderStageView();
+        return;
+    }
+
+    const props = ensureSceneProps(window.currentScene.id);
+    props.push({
+        id: `prop_${Date.now()}`,
+        name: '道具',
+        x: minX,
+        y: minY,
+        width,
+        height
+    });
+
+    autoSave();
+    renderStageView();
+    showStatus('已添加道具框', 'success');
 }
 
 // 处理初始位置设置 - 直接使用已选择的角色
@@ -334,10 +427,99 @@ export function renderStageView() {
         updatePositionDisplay('角色视图', BlockingApp.state.selectedCharacter);
     }
 
+    renderSceneProps(svg);
+
     // 如果选中了多个点，绘制边界框
     if (selectedMarkers.length >= 2) {
         drawBoundingBox(svg);
     }
+}
+
+function renderSceneProps(svg) {
+    if (!svg || !window.currentScene) return;
+
+    const props = getSceneProps(window.currentScene.id);
+    props.forEach((prop) => drawPropBox(svg, prop, false));
+
+    if (drawingPropBox) {
+        const minX = Math.min(drawingPropBox.startX, drawingPropBox.endX);
+        const minY = Math.min(drawingPropBox.startY, drawingPropBox.endY);
+        const width = Math.abs(drawingPropBox.endX - drawingPropBox.startX);
+        const height = Math.abs(drawingPropBox.endY - drawingPropBox.startY);
+        drawPropBox(svg, {
+            id: '__draft__',
+            name: '道具(预览)',
+            x: minX,
+            y: minY,
+            width,
+            height
+        }, true);
+    }
+}
+
+function drawPropBox(svg, prop, isDraft = false) {
+    const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    g.setAttribute('data-prop-id', prop.id);
+
+    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    rect.setAttribute('x', `${prop.x}%`);
+    rect.setAttribute('y', `${prop.y}%`);
+    rect.setAttribute('width', `${prop.width}%`);
+    rect.setAttribute('height', `${prop.height}%`);
+    rect.setAttribute('rx', '4');
+    rect.setAttribute('fill', isDraft ? 'rgba(250, 204, 21, 0.18)' : 'rgba(250, 204, 21, 0.14)');
+    rect.setAttribute('stroke', '#b45309');
+    rect.setAttribute('stroke-width', isDraft ? '1.5' : '2');
+    rect.setAttribute('stroke-dasharray', isDraft ? '6,3' : '8,4');
+    g.appendChild(rect);
+
+    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    label.setAttribute('x', `${prop.x + 1}%`);
+    label.setAttribute('y', `${prop.y + 2.5}%`);
+    label.setAttribute('fill', '#78350f');
+    label.setAttribute('font-size', '11');
+    label.setAttribute('font-weight', '700');
+    label.setAttribute('pointer-events', 'none');
+    label.textContent = prop.name || '道具';
+    g.appendChild(label);
+
+    if (!isDraft) {
+        rect.style.cursor = isCoordinateAdjustMode ? 'move' : 'default';
+        rect.addEventListener('mousedown', (e) => {
+            if (!isCoordinateAdjustMode) return;
+            e.stopPropagation();
+            draggingPropBox = {
+                id: prop.id,
+                startMouseX: e.clientX,
+                startMouseY: e.clientY,
+                startX: prop.x,
+                startY: prop.y
+            };
+        });
+
+        const handle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        handle.setAttribute('cx', `${prop.x + prop.width}%`);
+        handle.setAttribute('cy', `${prop.y + prop.height}%`);
+        handle.setAttribute('r', '5');
+        handle.setAttribute('fill', '#b45309');
+        handle.setAttribute('stroke', '#fff');
+        handle.setAttribute('stroke-width', '1.5');
+        handle.style.cursor = isCoordinateAdjustMode ? 'nwse-resize' : 'default';
+        handle.addEventListener('mousedown', (e) => {
+            if (!isCoordinateAdjustMode) return;
+            e.stopPropagation();
+            resizingPropBox = {
+                id: prop.id,
+                startMouseX: e.clientX,
+                startMouseY: e.clientY,
+                startWidth: prop.width,
+                startHeight: prop.height
+            };
+        });
+        g.appendChild(handle);
+    }
+
+    svg.appendChild(g);
 }
 
 function renderBlockingSnapshot(snapshot) {
@@ -695,6 +877,35 @@ export function drawMarker(svg, x, y, color, label, isStart = false, charName = 
 
 // 处理走位点拖拽
 export function handleMarkerDrag(e, svg) {
+    // 道具框拖拽（移动/缩放）优先处理
+    if (draggingPropBox || resizingPropBox) {
+        const sceneId = window.currentScene?.id;
+        if (!sceneId || !svg) return;
+        const props = ensureSceneProps(sceneId);
+        const svgRect = svg.getBoundingClientRect();
+
+        if (draggingPropBox) {
+            const prop = props.find(p => p.id === draggingPropBox.id);
+            if (prop) {
+                const deltaX = (e.clientX - draggingPropBox.startMouseX) / svgRect.width * 100;
+                const deltaY = (e.clientY - draggingPropBox.startMouseY) / svgRect.height * 100;
+                prop.x = Math.max(0, Math.min(100 - prop.width, draggingPropBox.startX + deltaX));
+                prop.y = Math.max(0, Math.min(100 - prop.height, draggingPropBox.startY + deltaY));
+            }
+        } else if (resizingPropBox) {
+            const prop = props.find(p => p.id === resizingPropBox.id);
+            if (prop) {
+                const deltaW = (e.clientX - resizingPropBox.startMouseX) / svgRect.width * 100;
+                const deltaH = (e.clientY - resizingPropBox.startMouseY) / svgRect.height * 100;
+                prop.width = Math.max(2, Math.min(100 - prop.x, resizingPropBox.startWidth + deltaW));
+                prop.height = Math.max(2, Math.min(100 - prop.y, resizingPropBox.startHeight + deltaH));
+            }
+        }
+
+        renderStageView();
+        return;
+    }
+
     if (!draggingMarker) return;
 
     // 缩放模式
@@ -770,6 +981,13 @@ export function handleMarkerDrag(e, svg) {
 
 // 结束走位点拖拽
 export function endMarkerDrag() {
+    if (draggingPropBox || resizingPropBox) {
+        draggingPropBox = null;
+        resizingPropBox = null;
+        autoSave();
+        return;
+    }
+
     if (draggingMarker) {
         draggingMarker = null;
         autoSave();
@@ -1916,9 +2134,13 @@ export function unlinkMovement(movementIndex) {
 
 // 挂载到 window
 window.startSetInitial = startSetInitial;
+window.startAddPropBox = startAddPropBox;
 window.selectInitialCharacter = selectInitialCharacter;
 window.confirmInitialCharacter = confirmInitialCharacter;
 window.handleStageClick = handleStageClick;
+window.handleStageMouseDown = handleStageMouseDown;
+window.handlePropBoxDrawing = handlePropBoxDrawing;
+window.endPropBoxDrawing = endPropBoxDrawing;
 window.showCharacterModal = showCharacterModal;
 window.closeCharacterModal = closeCharacterModal;
 window.selectCharacterAction = selectCharacterAction;

@@ -622,22 +622,28 @@ export function loadStageMap(sceneIdOrMapFile) {
     };
 
     const svg = document.getElementById('stageOverlay');
+    svg.addEventListener('mousedown', (e) => {
+        if (window.handleStageMouseDown) window.handleStageMouseDown(e, svg);
+    });
     svg.addEventListener('click', (e) => {
         if (window.handleStageClick) window.handleStageClick(e);
     });
 
     // 弧线控制点 + 走位点拖拽 + 边界框拖拽事件
     svg.addEventListener('mousemove', (e) => {
+        if (window.handlePropBoxDrawing) window.handlePropBoxDrawing(e, svg);
         if (window.handleControlPointDrag) window.handleControlPointDrag(e, svg);
         if (window.handleMarkerDrag) window.handleMarkerDrag(e, svg);
         if (window.handleBoundingBoxDrag) window.handleBoundingBoxDrag(e, svg);
     });
     svg.addEventListener('mouseup', () => {
+        if (window.endPropBoxDrawing) window.endPropBoxDrawing();
         if (window.endControlPointDrag) window.endControlPointDrag();
         if (window.endMarkerDrag) window.endMarkerDrag();
         if (window.endBoundingBoxDrag) window.endBoundingBoxDrag();
     });
     svg.addEventListener('mouseleave', () => {
+        if (window.endPropBoxDrawing) window.endPropBoxDrawing();
         if (window.endControlPointDrag) window.endControlPointDrag();
         if (window.endMarkerDrag) window.endMarkerDrag();
         if (window.endBoundingBoxDrag) window.endBoundingBoxDrag();
