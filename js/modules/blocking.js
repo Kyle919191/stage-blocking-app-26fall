@@ -43,6 +43,7 @@ let isAddingPropBox = false;
 let drawingPropBox = null;  // { startX, startY, endX, endY }
 let draggingPropBox = null; // { id, startMouseX, startMouseY, startX, startY }
 let resizingPropBox = null; // { id, startMouseX, startMouseY, startWidth, startHeight }
+let rotatingPropBox = null; // { id, angleOffset }
 
 // 导出状态获取器（从 BlockingApp.state 读取）
 export function isSettingInitial() { return BlockingApp.state.settingInitial; }
@@ -72,6 +73,54 @@ function ensureSceneProps(sceneId) {
         window.blockingData[sceneId].__props__ = [];
     }
     return window.blockingData[sceneId].__props__;
+}
+
+function getPropById(sceneId, id) {
+    return getSceneProps(sceneId).find((p) => p.id === id);
+}
+
+function normalizeAngle(deg) {
+    let a = deg % 360;
+    if (a > 180) a -= 360;
+    if (a < -180) a += 360;
+    return a;
+}
+
+function getRotatedRectGeometry(prop) {
+    const x = prop.x;
+    const y = prop.y;
+    const w = prop.width;
+    const h = prop.height;
+    const angle = (prop.rotation || 0) * Math.PI / 180;
+    const cx = x + w / 2;
+    const cy = y + h / 2;
+
+    const rotate = (px, py) => {
+        const dx = px - cx;
+        const dy = py - cy;
+        return {
+            x: cx + dx * Math.cos(angle) - dy * Math.sin(angle),
+            y: cy + dx * Math.sin(angle) + dy * Math.cos(angle)
+        };
+    };
+
+    const tl = rotate(x, y);
+    const tr = rotate(x + w, y);
+    const br = rotate(x + w, y + h);
+    const bl = rotate(x, y + h);
+    const topCenter = { x: (tl.x + tr.x) / 2, y: (tl.y + tr.y) / 2 };
+
+    // 旋转把手向外偏移（百分比坐标）
+    const vdx = topCenter.x - cx;
+    const vdy = topCenter.y - cy;
+    const len = Math.max(0.001, Math.sqrt(vdx * vdx + vdy * vdy));
+    const offset = 4;
+    const rotateHandle = {
+        x: topCenter.x + (vdx / len) * offset,
+        y: topCenter.y + (vdy / len) * offset
+    };
+
+    return { tl, tr, br, bl, topCenter, rotateHandle, cx, cy };
 }
 
 // 开始设置初始位置 - 先选角色再选位置
@@ -249,12 +298,25 @@ export function endPropBoxDrawing() {
         x: minX,
         y: minY,
         width,
-        height
+        height,
+        rotation: 0
     });
 
     autoSave();
     renderStageView();
     showStatus('已添加道具框', 'success');
+}
+
+function deletePropBox(propId) {
+    if (!window.currentScene || !propId) return;
+    if (!confirm('确定删除这个道具框吗？')) return;
+    const props = ensureSceneProps(window.currentScene.id);
+    const idx = props.findIndex((p) => p.id === propId);
+    if (idx === -1) return;
+    props.splice(idx, 1);
+    autoSave();
+    renderStageView();
+    showStatus('道具框已删除', 'success');
 }
 
 // 处理初始位置设置 - 直接使用已选择的角色
@@ -460,22 +522,20 @@ function renderSceneProps(svg) {
 function drawPropBox(svg, prop, isDraft = false) {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('data-prop-id', prop.id);
+    const geometry = getRotatedRectGeometry(prop);
+    const { tl, tr, br, bl, topCenter, rotateHandle } = geometry;
 
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', `${prop.x}%`);
-    rect.setAttribute('y', `${prop.y}%`);
-    rect.setAttribute('width', `${prop.width}%`);
-    rect.setAttribute('height', `${prop.height}%`);
-    rect.setAttribute('rx', '4');
-    rect.setAttribute('fill', isDraft ? 'rgba(250, 204, 21, 0.18)' : 'rgba(250, 204, 21, 0.14)');
-    rect.setAttribute('stroke', '#b45309');
-    rect.setAttribute('stroke-width', isDraft ? '1.5' : '2');
-    rect.setAttribute('stroke-dasharray', isDraft ? '6,3' : '8,4');
-    g.appendChild(rect);
+    const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    poly.setAttribute('points', `${tl.x}%,${tl.y}% ${tr.x}%,${tr.y}% ${br.x}%,${br.y}% ${bl.x}%,${bl.y}%`);
+    poly.setAttribute('fill', isDraft ? 'rgba(250, 204, 21, 0.18)' : 'rgba(250, 204, 21, 0.14)');
+    poly.setAttribute('stroke', '#b45309');
+    poly.setAttribute('stroke-width', isDraft ? '1.5' : '2');
+    poly.setAttribute('stroke-dasharray', isDraft ? '6,3' : '8,4');
+    g.appendChild(poly);
 
     const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    label.setAttribute('x', `${prop.x + 1}%`);
-    label.setAttribute('y', `${prop.y + 2.5}%`);
+    label.setAttribute('x', `${tl.x + 1}%`);
+    label.setAttribute('y', `${tl.y + 2.5}%`);
     label.setAttribute('fill', '#78350f');
     label.setAttribute('font-size', '11');
     label.setAttribute('font-weight', '700');
@@ -484,8 +544,8 @@ function drawPropBox(svg, prop, isDraft = false) {
     g.appendChild(label);
 
     if (!isDraft) {
-        rect.style.cursor = isCoordinateAdjustMode ? 'move' : 'default';
-        rect.addEventListener('mousedown', (e) => {
+        poly.style.cursor = isCoordinateAdjustMode ? 'move' : 'default';
+        poly.addEventListener('mousedown', (e) => {
             if (!isCoordinateAdjustMode) return;
             e.stopPropagation();
             draggingPropBox = {
@@ -497,15 +557,32 @@ function drawPropBox(svg, prop, isDraft = false) {
             };
         });
 
-        const handle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        handle.setAttribute('cx', `${prop.x + prop.width}%`);
-        handle.setAttribute('cy', `${prop.y + prop.height}%`);
-        handle.setAttribute('r', '5');
-        handle.setAttribute('fill', '#b45309');
-        handle.setAttribute('stroke', '#fff');
-        handle.setAttribute('stroke-width', '1.5');
-        handle.style.cursor = isCoordinateAdjustMode ? 'nwse-resize' : 'default';
-        handle.addEventListener('mousedown', (e) => {
+        // 删除把手（右上角）
+        const deleteHandle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        deleteHandle.setAttribute('cx', `${tr.x}%`);
+        deleteHandle.setAttribute('cy', `${tr.y}%`);
+        deleteHandle.setAttribute('r', '6');
+        deleteHandle.setAttribute('fill', '#ef4444');
+        deleteHandle.setAttribute('stroke', '#fff');
+        deleteHandle.setAttribute('stroke-width', '1.5');
+        deleteHandle.style.cursor = isCoordinateAdjustMode ? 'pointer' : 'default';
+        deleteHandle.addEventListener('click', (e) => {
+            if (!isCoordinateAdjustMode) return;
+            e.stopPropagation();
+            deletePropBox(prop.id);
+        });
+        g.appendChild(deleteHandle);
+
+        // 缩放把手（右下角）
+        const resizeHandle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        resizeHandle.setAttribute('cx', `${br.x}%`);
+        resizeHandle.setAttribute('cy', `${br.y}%`);
+        resizeHandle.setAttribute('r', '5');
+        resizeHandle.setAttribute('fill', '#b45309');
+        resizeHandle.setAttribute('stroke', '#fff');
+        resizeHandle.setAttribute('stroke-width', '1.5');
+        resizeHandle.style.cursor = isCoordinateAdjustMode ? 'nwse-resize' : 'default';
+        resizeHandle.addEventListener('mousedown', (e) => {
             if (!isCoordinateAdjustMode) return;
             e.stopPropagation();
             resizingPropBox = {
@@ -516,7 +593,37 @@ function drawPropBox(svg, prop, isDraft = false) {
                 startHeight: prop.height
             };
         });
-        g.appendChild(handle);
+        g.appendChild(resizeHandle);
+
+        // 旋转把手（上方）
+        const rotateLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        rotateLine.setAttribute('x1', `${topCenter.x}%`);
+        rotateLine.setAttribute('y1', `${topCenter.y}%`);
+        rotateLine.setAttribute('x2', `${rotateHandle.x}%`);
+        rotateLine.setAttribute('y2', `${rotateHandle.y}%`);
+        rotateLine.setAttribute('stroke', '#78350f');
+        rotateLine.setAttribute('stroke-width', '1.2');
+        g.appendChild(rotateLine);
+
+        const rotateDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        rotateDot.setAttribute('cx', `${rotateHandle.x}%`);
+        rotateDot.setAttribute('cy', `${rotateHandle.y}%`);
+        rotateDot.setAttribute('r', '5');
+        rotateDot.setAttribute('fill', '#78350f');
+        rotateDot.setAttribute('stroke', '#fff');
+        rotateDot.setAttribute('stroke-width', '1.5');
+        rotateDot.style.cursor = isCoordinateAdjustMode ? 'alias' : 'default';
+        rotateDot.addEventListener('mousedown', (e) => {
+            if (!isCoordinateAdjustMode) return;
+            e.stopPropagation();
+            const mouse = getRelativeCoordinates(e, svg);
+            const angle = Math.atan2(mouse.y - geometry.cy, mouse.x - geometry.cx) * 180 / Math.PI;
+            rotatingPropBox = {
+                id: prop.id,
+                angleOffset: angle - (prop.rotation || 0)
+            };
+        });
+        g.appendChild(rotateDot);
     }
 
     svg.appendChild(g);
@@ -878,7 +985,7 @@ export function drawMarker(svg, x, y, color, label, isStart = false, charName = 
 // 处理走位点拖拽
 export function handleMarkerDrag(e, svg) {
     // 道具框拖拽（移动/缩放）优先处理
-    if (draggingPropBox || resizingPropBox) {
+    if (draggingPropBox || resizingPropBox || rotatingPropBox) {
         const sceneId = window.currentScene?.id;
         if (!sceneId || !svg) return;
         const props = ensureSceneProps(sceneId);
@@ -899,6 +1006,15 @@ export function handleMarkerDrag(e, svg) {
                 const deltaH = (e.clientY - resizingPropBox.startMouseY) / svgRect.height * 100;
                 prop.width = Math.max(2, Math.min(100 - prop.x, resizingPropBox.startWidth + deltaW));
                 prop.height = Math.max(2, Math.min(100 - prop.y, resizingPropBox.startHeight + deltaH));
+            }
+        } else if (rotatingPropBox) {
+            const prop = props.find(p => p.id === rotatingPropBox.id);
+            if (prop) {
+                const mouse = getRelativeCoordinates(e, svg);
+                const cx = prop.x + prop.width / 2;
+                const cy = prop.y + prop.height / 2;
+                const angle = Math.atan2(mouse.y - cy, mouse.x - cx) * 180 / Math.PI;
+                prop.rotation = normalizeAngle(angle - rotatingPropBox.angleOffset);
             }
         }
 
@@ -981,9 +1097,10 @@ export function handleMarkerDrag(e, svg) {
 
 // 结束走位点拖拽
 export function endMarkerDrag() {
-    if (draggingPropBox || resizingPropBox) {
+    if (draggingPropBox || resizingPropBox || rotatingPropBox) {
         draggingPropBox = null;
         resizingPropBox = null;
+        rotatingPropBox = null;
         autoSave();
         return;
     }
