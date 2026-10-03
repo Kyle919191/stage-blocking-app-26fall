@@ -524,9 +524,16 @@ function drawPropBox(svg, prop, isDraft = false) {
     g.setAttribute('data-prop-id', prop.id);
     const geometry = getRotatedRectGeometry(prop);
     const { tl, tr, br, bl, topCenter, rotateHandle } = geometry;
+    const svgRect = svg.getBoundingClientRect();
+    const toAbsX = (pct) => (pct / 100) * svgRect.width;
+    const toAbsY = (pct) => (pct / 100) * svgRect.height;
 
     const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    poly.setAttribute('points', `${tl.x}%,${tl.y}% ${tr.x}%,${tr.y}% ${br.x}%,${br.y}% ${bl.x}%,${bl.y}%`);
+    // polygon 的 points 不支持百分比，需转换为像素坐标
+    poly.setAttribute(
+        'points',
+        `${toAbsX(tl.x)},${toAbsY(tl.y)} ${toAbsX(tr.x)},${toAbsY(tr.y)} ${toAbsX(br.x)},${toAbsY(br.y)} ${toAbsX(bl.x)},${toAbsY(bl.y)}`
+    );
     poly.setAttribute('fill', isDraft ? 'rgba(250, 204, 21, 0.18)' : 'rgba(250, 204, 21, 0.14)');
     poly.setAttribute('stroke', '#b45309');
     poly.setAttribute('stroke-width', isDraft ? '1.5' : '2');
