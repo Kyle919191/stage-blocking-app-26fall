@@ -110,17 +110,7 @@ function getRotatedRectGeometry(prop) {
     const bl = rotate(x, y + h);
     const topCenter = { x: (tl.x + tr.x) / 2, y: (tl.y + tr.y) / 2 };
 
-    // 旋转把手向外偏移（百分比坐标）
-    const vdx = topCenter.x - cx;
-    const vdy = topCenter.y - cy;
-    const len = Math.max(0.001, Math.sqrt(vdx * vdx + vdy * vdy));
-    const offset = 4;
-    const rotateHandle = {
-        x: topCenter.x + (vdx / len) * offset,
-        y: topCenter.y + (vdy / len) * offset
-    };
-
-    return { tl, tr, br, bl, topCenter, rotateHandle, cx, cy };
+    return { tl, tr, br, bl, topCenter, cx, cy };
 }
 
 // 开始设置初始位置 - 先选角色再选位置
@@ -523,7 +513,7 @@ function drawPropBox(svg, prop, isDraft = false) {
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('data-prop-id', prop.id);
     const geometry = getRotatedRectGeometry(prop);
-    const { tl, tr, br, bl, topCenter, rotateHandle } = geometry;
+    const { tl, tr, br, bl, topCenter } = geometry;
     const svgRect = svg.getBoundingClientRect();
     const toAbsX = (pct) => (pct / 100) * svgRect.width;
     const toAbsY = (pct) => (pct / 100) * svgRect.height;
@@ -539,16 +529,6 @@ function drawPropBox(svg, prop, isDraft = false) {
     poly.setAttribute('stroke-width', isDraft ? '1.5' : '2');
     poly.setAttribute('stroke-dasharray', isDraft ? '6,3' : '8,4');
     g.appendChild(poly);
-
-    const label = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-    label.setAttribute('x', `${tl.x + 1}%`);
-    label.setAttribute('y', `${tl.y + 2.5}%`);
-    label.setAttribute('fill', '#78350f');
-    label.setAttribute('font-size', '11');
-    label.setAttribute('font-weight', '700');
-    label.setAttribute('pointer-events', 'none');
-    label.textContent = prop.name || '道具';
-    g.appendChild(label);
 
     if (!isDraft) {
         poly.style.cursor = isCoordinateAdjustMode ? 'move' : 'default';
@@ -602,24 +582,15 @@ function drawPropBox(svg, prop, isDraft = false) {
         });
         g.appendChild(resizeHandle);
 
-        // 旋转把手（上方）
-        const rotateLine = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        rotateLine.setAttribute('x1', `${topCenter.x}%`);
-        rotateLine.setAttribute('y1', `${topCenter.y}%`);
-        rotateLine.setAttribute('x2', `${rotateHandle.x}%`);
-        rotateLine.setAttribute('y2', `${rotateHandle.y}%`);
-        rotateLine.setAttribute('stroke', '#78350f');
-        rotateLine.setAttribute('stroke-width', '1.2');
-        g.appendChild(rotateLine);
-
+        // 旋转把手（直接放在框顶中点）
         const rotateDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        rotateDot.setAttribute('cx', `${rotateHandle.x}%`);
-        rotateDot.setAttribute('cy', `${rotateHandle.y}%`);
+        rotateDot.setAttribute('cx', `${topCenter.x}%`);
+        rotateDot.setAttribute('cy', `${topCenter.y}%`);
         rotateDot.setAttribute('r', '5');
         rotateDot.setAttribute('fill', '#78350f');
         rotateDot.setAttribute('stroke', '#fff');
         rotateDot.setAttribute('stroke-width', '1.5');
-        rotateDot.style.cursor = isCoordinateAdjustMode ? 'alias' : 'default';
+        rotateDot.style.cursor = isCoordinateAdjustMode ? 'grab' : 'default';
         rotateDot.addEventListener('mousedown', (e) => {
             if (!isCoordinateAdjustMode) return;
             e.stopPropagation();

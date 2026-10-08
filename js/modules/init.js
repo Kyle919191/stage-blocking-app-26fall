@@ -22,6 +22,23 @@ let blockingData = {};
 let dialogueEdits = {};
 let githubConfig = null;
 
+// Ver2.3 PDF 中各节起止页（用于场次下拉展示）
+const SCENE_PAGE_RANGES = {
+    '1-1': [3, 6],    // 第一节
+    '1-2': [7, 13],   // 第二节
+    '1-3': [14, 19],  // 第三节
+    '1-4': [20, 23],  // 第四节
+    '1-5': [24, 35],  // 第五节
+    '1-6': [36, 47],  // 第六节
+    '1-7': [48, 55],  // 第六小节
+    '1-8': [56, 61],  // 第七节
+    '1-9': [62, 64],  // 第八节
+    '1-10': [65, 69], // 第九节
+    '1-11': [70, 74], // 第十节
+    '1-12': [75, 80], // 第十一节
+    '1-13': [81, 89]  // 第十二节
+};
+
 function normalizeLineOperations(rawData) {
     const data = rawData || {};
     return {
@@ -503,9 +520,11 @@ export function closeOnboarding() {
 
 export function setupSceneSelector() {
     const select = document.getElementById('sceneSelect');
-    select.innerHTML = scenes.map(scene =>
-        `<option value="${scene.id}">${scene.name || scene.id}${scene.subtitle ? ' - ' + scene.subtitle : ''}</option>`
-    ).join('');
+    select.innerHTML = scenes.map(scene => {
+        const range = SCENE_PAGE_RANGES[scene.id];
+        const pageText = range ? `（${range[0]}页 to ${range[1]}页）` : '';
+        return `<option value="${scene.id}">${scene.name || scene.id}${pageText}${scene.subtitle ? ' - ' + scene.subtitle : ''}</option>`;
+    }).join('');
 }
 
 export function setupEventListeners() {
