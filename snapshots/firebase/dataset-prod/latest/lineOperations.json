@@ -1,0 +1,29 @@
+{
+  "added": {
+    "1-6": {
+      "1-6-new-1791510763686": {
+        "addedAt": 1791510763686,
+        "character": "薇拉·克雷松",
+        "content": "怎么死的",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-6-102",
+        "sceneId": "1-6"
+      },
+      "1-6-new-1791510801172": {
+        "addedAt": 1791510801172,
+        "character": "威廉·布洛尔",
+        "content": "怎么死的！",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-6-102",
+        "sceneId": "1-6"
+      }
+    }
+  },
+  "deleted": {
+    "1-6": [
+      "1-6-new-1791510763686"
+    ]
+  }
+}
