@@ -356,5 +356,81 @@
         "note": "对视，自然回答"
       }
     ]
+  },
+  "1-7": {
+    "1-7-20": [
+      {
+        "charIndex": 1,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792111429237,
+        "note": "害怕 后退"
+      }
+    ],
+    "1-7-23": [
+      {
+        "charIndex": 65,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792112166037,
+        "note": "害怕后退"
+      }
+    ],
+    "1-7-29": [
+      {
+        "charIndex": 66,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1792111511237,
+        "note": "从前绕最远的路出去"
+      }
+    ],
+    "1-7-3": [
+      {
+        "charIndex": 0,
+        "characterId": "埃米莉·布伦特",
+        "createdAt": 1792110765701,
+        "note": "需要道具小包"
+      }
+    ],
+    "1-7-31": [
+      {
+        "charIndex": 22,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1792111592054,
+        "note": "停着说"
+      }
+    ],
+    "1-7-49": [
+      {
+        "charIndex": 1,
+        "characterId": "埃米莉·布伦特",
+        "createdAt": 1792116435517,
+        "note": "绕一圈"
+      }
+    ],
+    "1-7-96": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1792113585131,
+        "note": "戴着帽子"
+      }
+    ]
+  },
+  "1-9": {
+    "1-9-0": [
+      {
+        "charIndex": 1,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792114449455,
+        "note": "第七节 “也许真的” 初始走位"
+      }
+    ],
+    "1-9-20": [
+      {
+        "charIndex": 13,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1792115004961,
+        "note": "稍走一两步"
+      }
+    ]
   }
 }
