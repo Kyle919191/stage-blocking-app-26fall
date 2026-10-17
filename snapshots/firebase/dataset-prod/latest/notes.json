@@ -1,4 +1,100 @@
 {
+  "1-10": {
+    "1-10-36": [
+      {
+        "charIndex": 3,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792199415260,
+        "note": "观察窗户"
+      }
+    ],
+    "1-10-44": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1792199460831,
+        "note": "气笑了"
+      }
+    ],
+    "1-10-46": [
+      {
+        "charIndex": 9,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792199481875,
+        "note": "非常紧张（放大失控的可能）"
+      }
+    ],
+    "1-10-5": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792197703243,
+        "note": "站起"
+      }
+    ],
+    "1-10-60": [
+      {
+        "charIndex": 14,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792199847901,
+        "note": "抬步的脚"
+      }
+    ],
+    "1-10-61": [
+      {
+        "charIndex": 7,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792199861947,
+        "note": "把手推开"
+      }
+    ]
+  },
+  "1-11": {
+    "1-11-11": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792201091648,
+        "note": "站起"
+      }
+    ],
+    "1-11-17": [
+      {
+        "charIndex": 15,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792201145863,
+        "note": "一起念"
+      }
+    ],
+    "1-11-53": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203066402,
+        "note": "二档位"
+      }
+    ],
+    "1-11-73": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203090403,
+        "note": "超级快"
+      },
+      {
+        "charIndex": 143,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203104935,
+        "note": "冲出去"
+      },
+      {
+        "charIndex": 144,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203115570,
+        "note": "如果没有人在意，可以随意重复"
+      }
+    ]
+  },
   "1-4": {
     "1-4-42": [
       {
@@ -396,6 +492,36 @@
         "characterId": "麦克阿瑟将军",
         "createdAt": 1792111592054,
         "note": "停着说"
+      }
+    ],
+    "1-7-41": [
+      {
+        "charIndex": 24,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792195923734,
+        "note": "用手搭肩膀"
+      }
+    ],
+    "1-7-42": [
+      {
+        "charIndex": 6,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792195936617,
+        "note": "推开手"
+      }
+    ],
+    "1-7-45": [
+      {
+        "charIndex": 0,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792196442377,
+        "note": "再拉一次手"
+      },
+      {
+        "charIndex": 50,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792196497874,
+        "note": "用力拉过来"
       }
     ],
     "1-7-49": [

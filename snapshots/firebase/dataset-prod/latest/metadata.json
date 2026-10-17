@@ -1,7 +1,7 @@
 {
   "dataset": "prod",
-  "versionName": "1015",
-  "exportedAtUtc": "2026-10-16T02-14-00Z",
+  "versionName": "20261016",
+  "exportedAtUtc": "2026-10-17T02-22-15Z",
   "databaseUrl": "https://rctc-fall2026-default-rtdb.firebaseio.com",
   "paths": {
     "blockingData": "datasets/prod/blockingData",

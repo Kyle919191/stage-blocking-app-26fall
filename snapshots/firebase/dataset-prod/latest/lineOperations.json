@@ -1,5 +1,16 @@
 {
   "added": {
+    "1-10": {
+      "1-10-new-1792193887302": {
+        "addedAt": 1792193887302,
+        "character": "菲利普·隆巴德",
+        "content": "可枪就是丢了。",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-10-6",
+        "sceneId": "1-10"
+      }
+    },
     "1-6": {
       "1-6-new-1791510763686": {
         "addedAt": 1791510763686,
