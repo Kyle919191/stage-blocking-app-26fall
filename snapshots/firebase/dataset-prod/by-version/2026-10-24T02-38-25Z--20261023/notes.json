@@ -1,0 +1,668 @@
+{
+  "1-10": {
+    "1-10-36": [
+      {
+        "charIndex": 3,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792199415260,
+        "note": "观察窗户"
+      }
+    ],
+    "1-10-44": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1792199460831,
+        "note": "气笑了"
+      }
+    ],
+    "1-10-46": [
+      {
+        "charIndex": 9,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792199481875,
+        "note": "非常紧张（放大失控的可能）"
+      }
+    ],
+    "1-10-5": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792197703243,
+        "note": "站起"
+      }
+    ],
+    "1-10-60": [
+      {
+        "charIndex": 14,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792199847901,
+        "note": "抬步的脚"
+      }
+    ],
+    "1-10-61": [
+      {
+        "charIndex": 7,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792199861947,
+        "note": "把手推开"
+      }
+    ]
+  },
+  "1-11": {
+    "1-11-11": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792201091648,
+        "note": "站起"
+      }
+    ],
+    "1-11-17": [
+      {
+        "charIndex": 15,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792201145863,
+        "note": "一起念"
+      }
+    ],
+    "1-11-53": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203066402,
+        "note": "二档位"
+      }
+    ],
+    "1-11-73": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203090403,
+        "note": "超级快"
+      },
+      {
+        "charIndex": 143,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203104935,
+        "note": "冲出去"
+      },
+      {
+        "charIndex": 144,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792203115570,
+        "note": "如果没有人在意，可以随意重复"
+      }
+    ]
+  },
+  "1-4": {
+    "1-4-42": [
+      {
+        "charIndex": 0,
+        "characterId": "罗杰斯",
+        "createdAt": 1791504721886,
+        "note": "站起"
+      },
+      {
+        "charIndex": 32,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791505984902,
+        "note": "安抚罗杰斯太太"
+      }
+    ],
+    "1-4-44": [
+      {
+        "charIndex": 55,
+        "characterId": "罗杰斯",
+        "createdAt": 1791505998700,
+        "note": "坐下"
+      }
+    ],
+    "1-4-49": [
+      {
+        "charIndex": 0,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791504754500,
+        "note": "站起"
+      }
+    ],
+    "1-4-50": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791505248598,
+        "note": "打断"
+      }
+    ],
+    "1-4-57": [
+      {
+        "charIndex": 8,
+        "characterId": "安东尼·马斯顿",
+        "createdAt": 1791506371084,
+        "note": "打破紧张氛围，但仍然被罗杰斯太太晕倒影响"
+      }
+    ],
+    "1-4-68": [
+      {
+        "charIndex": 16,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791505595720,
+        "note": "对下属招手拒绝"
+      }
+    ],
+    "1-4-8": [
+      {
+        "charIndex": 20,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791505170222,
+        "note": "说完后找个时间坐下来"
+      }
+    ]
+  },
+  "1-5": {
+    "1-5-40": [
+      {
+        "charIndex": 1,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1791055037370,
+        "note": "给维拉眼色，让她把包拿走"
+      },
+      {
+        "charIndex": 23,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1791055406853,
+        "note": "老花镜"
+      }
+    ],
+    "1-5-44": [
+      {
+        "charIndex": 13,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1791054063739,
+        "note": "站起"
+      }
+    ],
+    "1-5-47": [
+      {
+        "charIndex": 35,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1791054051142,
+        "note": "坐下"
+      }
+    ],
+    "1-5-6": [
+      {
+        "charIndex": 0,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1791056150082,
+        "note": "站起"
+      }
+    ]
+  },
+  "1-6": {
+    "1-6-11": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791507569172,
+        "note": "左顾右盼 踱步 紧张"
+      },
+      {
+        "charIndex": 3,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791509268379,
+        "note": "坐下"
+      }
+    ],
+    "1-6-111": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791510861489,
+        "note": "边走边慢慢说，思考（专业）"
+      }
+    ],
+    "1-6-112": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791510943772,
+        "note": "站起"
+      }
+    ],
+    "1-6-113": [
+      {
+        "charIndex": 16,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791510898723,
+        "note": "面向布洛尔"
+      }
+    ],
+    "1-6-115": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791510961623,
+        "note": "生气"
+      }
+    ],
+    "1-6-117": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791512154296,
+        "note": "打断"
+      }
+    ],
+    "1-6-120": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791510929991,
+        "note": "坐下"
+      }
+    ],
+    "1-6-124": [
+      {
+        "charIndex": 12,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791512182541,
+        "note": "停顿，让大家惊讶"
+      }
+    ],
+    "1-6-127": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791511076389,
+        "note": "坐下"
+      }
+    ],
+    "1-6-137": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791511848162,
+        "note": "站起"
+      }
+    ],
+    "1-6-150": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791511265974,
+        "note": "情绪递进"
+      }
+    ],
+    "1-6-152": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791511281088,
+        "note": "余怒未消"
+      }
+    ],
+    "1-6-158": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791512230162,
+        "note": "保持情绪"
+      }
+    ],
+    "1-6-159": [
+      {
+        "charIndex": 0,
+        "characterId": "埃米莉·布伦特",
+        "createdAt": 1791511385624,
+        "note": "大声 愤怒"
+      }
+    ],
+    "1-6-160": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791511399255,
+        "note": "大声 接住艾米莉情绪"
+      }
+    ],
+    "1-6-162": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791512053526,
+        "note": "坐下"
+      }
+    ],
+    "1-6-164": [
+      {
+        "charIndex": 5,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791510722206,
+        "note": "站起"
+      }
+    ],
+    "1-6-17": [
+      {
+        "charIndex": 7,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791507667208,
+        "note": "快步走"
+      }
+    ],
+    "1-6-19": [
+      {
+        "charIndex": 10,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791507682140,
+        "note": "坐下"
+      }
+    ],
+    "1-6-2": [
+      {
+        "charIndex": 76,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791509984593,
+        "note": "坐下"
+      }
+    ],
+    "1-6-26": [
+      {
+        "charIndex": 39,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791509371898,
+        "note": "站起"
+      }
+    ],
+    "1-6-31": [
+      {
+        "charIndex": 0,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791508073509,
+        "note": "释怀，对后辈"
+      }
+    ],
+    "1-6-32": [
+      {
+        "charIndex": 19,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791508203039,
+        "note": "尝试说话"
+      },
+      {
+        "charIndex": 34,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791509400714,
+        "note": "站起"
+      }
+    ],
+    "1-6-5": [
+      {
+        "charIndex": 7,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791507363674,
+        "note": "朝窗外看一下"
+      }
+    ],
+    "1-6-54": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791509879960,
+        "note": "猛一回头 顿住"
+      }
+    ],
+    "1-6-61": [
+      {
+        "charIndex": 14,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1791508376689,
+        "note": "语气上扬"
+      }
+    ],
+    "1-6-65": [
+      {
+        "charIndex": 9,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791508611357,
+        "note": "低头揉眼睛，平静"
+      }
+    ],
+    "1-6-66": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792799658058,
+        "note": "和法官对视（不理解）"
+      }
+    ],
+    "1-6-69": [
+      {
+        "charIndex": 0,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1791508626159,
+        "note": "语气平静"
+      }
+    ],
+    "1-6-70": [
+      {
+        "charIndex": 3,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792797297370,
+        "note": "倒酒"
+      }
+    ],
+    "1-6-73": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792798511791,
+        "note": "微微走远"
+      }
+    ],
+    "1-6-77": [
+      {
+        "charIndex": 1,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792797375407,
+        "note": "浪漫"
+      }
+    ],
+    "1-6-79": [
+      {
+        "charIndex": 0,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792799468173,
+        "note": "站起"
+      }
+    ],
+    "1-6-84": [
+      {
+        "charIndex": 7,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792798554903,
+        "note": "站起"
+      }
+    ],
+    "1-6-85": [
+      {
+        "charIndex": 13,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792797953089,
+        "note": "停顿 走位 让位置"
+      }
+    ],
+    "1-6-86": [
+      {
+        "charIndex": 8,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792797764603,
+        "note": "坐下"
+      }
+    ],
+    "1-6-91": [
+      {
+        "charIndex": 1,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792797980338,
+        "note": "迈一小步"
+      }
+    ],
+    "1-6-98": [
+      {
+        "charIndex": 26,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1791512126794,
+        "note": "对视，自然回答"
+      }
+    ]
+  },
+  "1-7": {
+    "1-7-20": [
+      {
+        "charIndex": 1,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792111429237,
+        "note": "害怕 后退"
+      }
+    ],
+    "1-7-23": [
+      {
+        "charIndex": 65,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792112166037,
+        "note": "害怕后退"
+      }
+    ],
+    "1-7-29": [
+      {
+        "charIndex": 66,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1792111511237,
+        "note": "从前绕最远的路出去"
+      }
+    ],
+    "1-7-3": [
+      {
+        "charIndex": 0,
+        "characterId": "埃米莉·布伦特",
+        "createdAt": 1792110765701,
+        "note": "需要道具小包"
+      }
+    ],
+    "1-7-31": [
+      {
+        "charIndex": 22,
+        "characterId": "麦克阿瑟将军",
+        "createdAt": 1792111592054,
+        "note": "停着说"
+      }
+    ],
+    "1-7-41": [
+      {
+        "charIndex": 24,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792195923734,
+        "note": "用手搭肩膀"
+      }
+    ],
+    "1-7-42": [
+      {
+        "charIndex": 6,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792195936617,
+        "note": "推开手"
+      }
+    ],
+    "1-7-45": [
+      {
+        "charIndex": 0,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792196442377,
+        "note": "再拉一次手"
+      },
+      {
+        "charIndex": 50,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792196497874,
+        "note": "用力拉过来"
+      }
+    ],
+    "1-7-49": [
+      {
+        "charIndex": 1,
+        "characterId": "埃米莉·布伦特",
+        "createdAt": 1792116435517,
+        "note": "绕一圈"
+      }
+    ],
+    "1-7-96": [
+      {
+        "charIndex": 0,
+        "characterId": "阿姆斯特朗医生",
+        "createdAt": 1792113585131,
+        "note": "戴着帽子"
+      }
+    ]
+  },
+  "1-8": {
+    "1-8-0": [
+      {
+        "charIndex": 5,
+        "characterId": "威廉·布洛尔",
+        "createdAt": 1792802405219,
+        "note": "发现只有法官一个人，跟上"
+      }
+    ],
+    "1-8-31": [
+      {
+        "charIndex": 10,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792801093695,
+        "note": "烤一烤衣服"
+      }
+    ],
+    "1-8-43": [
+      {
+        "charIndex": 22,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1792801313024,
+        "note": "绕后回座位"
+      }
+    ],
+    "1-8-84": [
+      {
+        "charIndex": 17,
+        "characterId": "菲利普·隆巴德",
+        "createdAt": 1792804878372,
+        "note": "独自演讲"
+      }
+    ]
+  },
+  "1-9": {
+    "1-9-0": [
+      {
+        "charIndex": 1,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792114449455,
+        "note": "第七节 “也许真的” 初始走位"
+      }
+    ],
+    "1-9-20": [
+      {
+        "charIndex": 13,
+        "characterId": "劳伦斯·沃格雷弗爵士",
+        "createdAt": 1792115004961,
+        "note": "稍走一两步"
+      }
+    ],
+    "1-9-29": [
+      {
+        "charIndex": 0,
+        "characterId": "薇拉·克雷松",
+        "createdAt": 1792806562070,
+        "note": "一直抓着隆的手"
+      }
+    ]
+  }
+}

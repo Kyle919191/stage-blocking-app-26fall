@@ -88,5 +88,17 @@
     "editedAt": 1791508338557,
     "originalContent": "（从左一大厅进）早上好。",
     "sceneId": "1-6"
+  },
+  "1-6-78": {
+    "content": "真可惜，你睡过头了。",
+    "editedAt": 1792797146260,
+    "originalContent": "你睡过头了，真是太糟了。",
+    "sceneId": "1-6"
+  },
+  "1-8-88": {
+    "content": "我听到的故事可破绽重重啊，你听着。",
+    "editedAt": 1792803848021,
+    "originalContent": "我听到的故事可破绽重重啊。",
+    "sceneId": "1-8"
   }
 }
