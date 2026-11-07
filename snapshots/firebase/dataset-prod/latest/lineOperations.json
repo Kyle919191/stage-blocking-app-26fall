@@ -11,6 +11,28 @@
         "sceneId": "1-10"
       }
     },
+    "1-12": {
+      "1-12-new-1794013962640": {
+        "addedAt": 1794013962640,
+        "character": "菲利普·隆巴德",
+        "content": "真是江山易改，秉性难移啊，布洛尔！顺便问一句，在朋友和公正之间，你选择了作伪证，不是吗？",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-12-54",
+        "sceneId": "1-12"
+      }
+    },
+    "1-13": {
+      "1-13-new-1793483149632": {
+        "addedAt": 1793483149632,
+        "character": "薇拉·克雷松",
+        "content": "菲利普？菲利普！",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-13-60",
+        "sceneId": "1-13"
+      }
+    },
     "1-6": {
       "1-6-new-1791510763686": {
         "addedAt": 1791510763686,
