@@ -1,4 +1,209 @@
 {
+  "1-1": {
+    "__props__": [
+      {
+        "height": 11.16,
+        "id": "prop_1794168671746",
+        "name": "道具",
+        "rotation": 0,
+        "width": 20.090000000000003,
+        "x": 36.3,
+        "y": 12.61
+      },
+      {
+        "height": 9.509999999999998,
+        "id": "prop_1794168675259",
+        "name": "道具",
+        "rotation": 0,
+        "width": 9.719999999999999,
+        "x": 16.67,
+        "y": 36.38
+      },
+      {
+        "height": 11.329999999999998,
+        "id": "prop_1794168678925",
+        "name": "道具",
+        "rotation": 0,
+        "width": 8.61,
+        "x": 7.5,
+        "y": 65.27
+      },
+      {
+        "height": 11.700000000000003,
+        "id": "prop_1794168682650",
+        "name": "道具",
+        "rotation": 0,
+        "width": 13.430000000000007,
+        "x": 68.33,
+        "y": 37.29
+      },
+      {
+        "height": 13.349999999999994,
+        "id": "prop_1794168686445",
+        "name": "道具",
+        "rotation": 0,
+        "width": 20.549999999999997,
+        "x": 68.52,
+        "y": 67.64
+      }
+    ],
+    "纳拉科特": {
+      "initial": {
+        "x": 96.3,
+        "y": 6.22
+      },
+      "movements": [
+        {
+          "charIndex": 0,
+          "lineId": "1-1-0",
+          "timestamp": 1794169894976,
+          "type": "line",
+          "x": 23.51,
+          "y": 16.7
+        },
+        {
+          "charIndex": 12,
+          "lineId": "1-1-31",
+          "timestamp": 1794170502721,
+          "type": "line",
+          "x": 2.22,
+          "y": 4.17
+        }
+      ]
+    },
+    "罗杰斯": {
+      "initial": {
+        "x": 95.74,
+        "y": 12.25
+      },
+      "movements": [
+        {
+          "charIndex": 19,
+          "lineId": "1-1-24",
+          "timestamp": 1794169548978,
+          "type": "line",
+          "x": 38.15,
+          "y": 7.99
+        },
+        {
+          "charIndex": 7,
+          "lineId": "1-1-8",
+          "timestamp": 1794169945092,
+          "type": "line",
+          "x": 41.52,
+          "y": 9.62
+        },
+        {
+          "charIndex": 2,
+          "lineId": "1-1-10",
+          "timestamp": 1794169963458,
+          "type": "line",
+          "x": 77.46,
+          "y": 28.13
+        },
+        {
+          "charIndex": 9,
+          "lineId": "1-1-20",
+          "timestamp": 1794169995009,
+          "type": "line",
+          "x": 43.64,
+          "y": 7.26
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-1-25",
+          "timestamp": 1794170016325,
+          "type": "line",
+          "x": 41.23,
+          "y": 37.57
+        },
+        {
+          "charIndex": 12,
+          "lineId": "1-1-31",
+          "timestamp": 1794170510121,
+          "type": "line",
+          "x": 94.99,
+          "y": 5.08
+        }
+      ]
+    },
+    "罗杰斯太太": {
+      "initial": {
+        "x": 92.22,
+        "y": 5.12
+      },
+      "movements": [
+        {
+          "charIndex": 0,
+          "lineId": "1-1-1",
+          "timestamp": 1794169450796,
+          "type": "line",
+          "x": 39.88,
+          "y": 34.48
+        },
+        {
+          "charIndex": 30,
+          "lineId": "1-1-27",
+          "timestamp": 1794169578328,
+          "type": "line",
+          "x": 54.53,
+          "y": 33.58
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-1-29",
+          "timestamp": 1794169584295,
+          "type": "line",
+          "x": 69.36,
+          "y": 9.26
+        },
+        {
+          "charIndex": 2,
+          "lineId": "1-1-10",
+          "timestamp": 1794169972775,
+          "type": "line",
+          "x": 26.3,
+          "y": 57.71
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-1-25",
+          "timestamp": 1794170024308,
+          "type": "line",
+          "x": 65.61,
+          "y": 53.18
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-1-25",
+          "timestamp": 1794170032959,
+          "type": "line",
+          "x": 78.03,
+          "y": 19.06
+        },
+        {
+          "charIndex": 12,
+          "lineId": "1-1-31",
+          "timestamp": 1794170514421,
+          "type": "line",
+          "x": 96.53,
+          "y": 11.98
+        }
+      ]
+    },
+    "菲利普·隆巴德": {
+      "initial": {
+        "x": 91.57,
+        "y": 12.25
+      }
+    },
+    "薇拉·克雷松": {
+      "initial": {
+        "x": 95.65,
+        "y": 18.1
+      }
+    }
+  },
   "1-10": {
     "__props__": [
       {
@@ -982,6 +1187,1030 @@
           "type": "line",
           "x": 58.77,
           "y": 62.28
+        }
+      ]
+    }
+  },
+  "1-2": {
+    "__props__": [
+      {
+        "height": 12.620000000000001,
+        "id": "prop_1794169585485",
+        "name": "道具",
+        "rotation": 0,
+        "width": 15.46,
+        "x": 41.67,
+        "y": 17.73
+      },
+      {
+        "height": 10.600000000000001,
+        "id": "prop_1794169588343",
+        "name": "道具",
+        "rotation": 0,
+        "width": 9.719999999999999,
+        "x": 21.85,
+        "y": 39.49
+      },
+      {
+        "height": 12.430000000000007,
+        "id": "prop_1794169591176",
+        "name": "道具",
+        "rotation": 0,
+        "width": 12.04,
+        "x": 9.07,
+        "y": 68.74
+      },
+      {
+        "height": 10.420000000000002,
+        "id": "prop_1794169594356",
+        "name": "道具",
+        "rotation": 0,
+        "width": 16.11,
+        "x": 66.02,
+        "y": 40.4
+      },
+      {
+        "height": 13.89,
+        "id": "prop_1794169597440",
+        "name": "道具",
+        "rotation": 0,
+        "width": 16.950000000000003,
+        "x": 72.96,
+        "y": 73.13
+      }
+    ],
+    "劳伦斯·沃格雷弗爵士": {
+      "initial": {
+        "x": 6.48,
+        "y": 2.01
+      },
+      "movements": [
+        {
+          "charIndex": 5,
+          "lineId": "1-2-63",
+          "timestamp": 1794173308533,
+          "type": "line",
+          "x": 40.37,
+          "y": 64.43
+        },
+        {
+          "charIndex": 26,
+          "lineId": "1-2-79",
+          "timestamp": 1794173471377,
+          "type": "line",
+          "x": 62.24,
+          "y": 38.29
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-85",
+          "timestamp": 1794173911307,
+          "type": "line",
+          "x": 36.22,
+          "y": 31.76
+        },
+        {
+          "charIndex": 20,
+          "lineId": "1-2-122",
+          "timestamp": 1794175647429,
+          "type": "line",
+          "x": 14.74,
+          "y": 14.52
+        }
+      ]
+    },
+    "埃米莉·布伦特": {
+      "initial": {
+        "x": 4.14,
+        "y": 2.9
+      },
+      "movements": [
+        {
+          "charIndex": 9,
+          "lineId": "1-2-41",
+          "timestamp": 1794172358890,
+          "type": "line",
+          "x": 36.8,
+          "y": 62.25
+        },
+        {
+          "charIndex": 35,
+          "lineId": "1-2-59",
+          "timestamp": 1794172426256,
+          "type": "line",
+          "x": 33.62,
+          "y": 22.32
+        },
+        {
+          "charIndex": 20,
+          "lineId": "1-2-122",
+          "timestamp": 1794175645430,
+          "type": "line",
+          "x": 19.75,
+          "y": 13.61
+        }
+      ]
+    },
+    "威廉·布洛尔": {
+      "initial": {
+        "x": 1.57,
+        "y": 13.35
+      },
+      "movements": [
+        {
+          "charIndex": 5,
+          "lineId": "1-2-11",
+          "timestamp": 1794170845419,
+          "type": "line",
+          "x": 37.48,
+          "y": 82.58
+        },
+        {
+          "charIndex": 46,
+          "lineId": "1-2-22",
+          "timestamp": 1794171098401,
+          "type": "line",
+          "x": 46.53,
+          "y": 69.69
+        },
+        {
+          "charIndex": 2,
+          "lineId": "1-2-17",
+          "timestamp": 1794171377615,
+          "type": "line",
+          "x": 29.87,
+          "y": 66.61
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-2-30",
+          "timestamp": 1794172285774,
+          "type": "line",
+          "x": 34.68,
+          "y": 64.07
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-38",
+          "timestamp": 1794172331290,
+          "type": "line",
+          "x": 66.86,
+          "y": 62.25
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-48",
+          "timestamp": 1794172377240,
+          "type": "line",
+          "x": 42.97,
+          "y": 70.78
+        },
+        {
+          "charIndex": 18,
+          "lineId": "1-2-48",
+          "timestamp": 1794172416223,
+          "type": "line",
+          "x": 65.7,
+          "y": 63.52
+        },
+        {
+          "charIndex": 11,
+          "lineId": "1-2-67",
+          "timestamp": 1794173331933,
+          "type": "line",
+          "x": 45.28,
+          "y": 62.98
+        },
+        {
+          "charIndex": 26,
+          "lineId": "1-2-79",
+          "timestamp": 1794173450879,
+          "type": "line",
+          "x": 27.65,
+          "y": 18.87
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-69",
+          "timestamp": 1794173711749,
+          "type": "line",
+          "x": 24.37,
+          "y": 62.79
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-69",
+          "timestamp": 1794173731415,
+          "type": "line",
+          "x": 36.9,
+          "y": 62.43
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-99",
+          "timestamp": 1794174792434,
+          "type": "line",
+          "x": 34.1,
+          "y": 62.43
+        },
+        {
+          "charIndex": 28,
+          "lineId": "1-2-114",
+          "timestamp": 1794174827133,
+          "type": "line",
+          "x": 42.87,
+          "y": 60.25
+        },
+        {
+          "charIndex": 6,
+          "lineId": "1-2-108",
+          "timestamp": 1794175062039,
+          "type": "line",
+          "x": 24.18,
+          "y": 75.14
+        },
+        {
+          "charIndex": 7,
+          "lineId": "1-2-112",
+          "timestamp": 1794175097954,
+          "type": "line",
+          "x": 38.54,
+          "y": 63.16
+        },
+        {
+          "charIndex": 14,
+          "lineId": "1-2-116",
+          "timestamp": 1794175341677,
+          "type": "line",
+          "x": 31.6,
+          "y": 55.35
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-118",
+          "timestamp": 1794175366909,
+          "type": "line",
+          "x": 46.82,
+          "y": 49
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-2-141",
+          "timestamp": 1794175752925,
+          "type": "line",
+          "x": 30.44,
+          "y": 77.13
+        }
+      ]
+    },
+    "安东尼·马斯顿": {
+      "initial": {
+        "x": 9.26,
+        "y": 2.74
+      },
+      "movements": [
+        {
+          "charIndex": 11,
+          "lineId": "1-2-1",
+          "timestamp": 1794170764369,
+          "type": "line",
+          "x": 39.88,
+          "y": 72.78
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-11",
+          "timestamp": 1794170801535,
+          "type": "line",
+          "x": 23.99,
+          "y": 83.85
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-16",
+          "timestamp": 1794171138983,
+          "type": "line",
+          "x": 36.13,
+          "y": 40.65
+        },
+        {
+          "charIndex": 26,
+          "lineId": "1-2-79",
+          "timestamp": 1794173387882,
+          "type": "line",
+          "x": 11.56,
+          "y": 13.07
+        }
+      ]
+    },
+    "纳拉科特": {
+      "initial": {
+        "x": 6.67,
+        "y": 6.76
+      }
+    },
+    "罗杰斯": {
+      "initial": {
+        "x": 3.98,
+        "y": 7.68
+      },
+      "movements": [
+        {
+          "charIndex": 21,
+          "lineId": "1-2-87",
+          "timestamp": 1794173923858,
+          "type": "line",
+          "x": 35.07,
+          "y": 42.29
+        },
+        {
+          "charIndex": 28,
+          "lineId": "1-2-91",
+          "timestamp": 1794173944389,
+          "type": "line",
+          "x": 57.9,
+          "y": 41.92
+        },
+        {
+          "charIndex": 1,
+          "lineId": "1-2-94",
+          "timestamp": 1794173965489,
+          "type": "line",
+          "x": 23.03,
+          "y": 70.24
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-96",
+          "timestamp": 1794174772169,
+          "type": "line",
+          "x": 9.25,
+          "y": 18.15
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-2-141",
+          "timestamp": 1794175755941,
+          "type": "line",
+          "x": 23.22,
+          "y": 80.04
+        },
+        {
+          "charIndex": 4,
+          "lineId": "1-2-124",
+          "timestamp": 1794175861687,
+          "type": "line",
+          "x": 33.91,
+          "y": 64.79
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-134",
+          "timestamp": 1794175875986,
+          "type": "line",
+          "x": 27.94,
+          "y": 74.77
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-134",
+          "timestamp": 1794175880136,
+          "type": "line",
+          "x": 36.42,
+          "y": 61.71
+        }
+      ]
+    },
+    "菲利普·隆巴德": {
+      "initial": {
+        "x": 1.76,
+        "y": 8.59
+      },
+      "movements": [
+        {
+          "charIndex": 11,
+          "lineId": "1-2-1",
+          "timestamp": 1794170784035,
+          "type": "line",
+          "x": 25.53,
+          "y": 61.89
+        },
+        {
+          "charIndex": 37,
+          "lineId": "1-2-38",
+          "timestamp": 1794172791737,
+          "type": "line",
+          "x": 17.92,
+          "y": 50.82
+        },
+        {
+          "charIndex": 26,
+          "lineId": "1-2-79",
+          "timestamp": 1794173392865,
+          "type": "line",
+          "x": 11.08,
+          "y": 5.99
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-63",
+          "timestamp": 1794173767864,
+          "type": "line",
+          "x": 29.87,
+          "y": 55.54
+        }
+      ]
+    },
+    "薇拉·克雷松": {
+      "initial": {
+        "x": 1.67,
+        "y": 3.66
+      },
+      "movements": [
+        {
+          "charIndex": 11,
+          "lineId": "1-2-1",
+          "timestamp": 1794170777353,
+          "type": "line",
+          "x": 45.28,
+          "y": 72.96
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-20",
+          "timestamp": 1794171087234,
+          "type": "line",
+          "x": 61.85,
+          "y": 52.09
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-34",
+          "timestamp": 1794172294457,
+          "type": "line",
+          "x": 44.03,
+          "y": 53.72
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-38",
+          "timestamp": 1794172326807,
+          "type": "line",
+          "x": 60.69,
+          "y": 41.74
+        },
+        {
+          "charIndex": 9,
+          "lineId": "1-2-41",
+          "timestamp": 1794172363357,
+          "type": "line",
+          "x": 52.6,
+          "y": 62.61
+        },
+        {
+          "charIndex": 10,
+          "lineId": "1-2-53",
+          "timestamp": 1794172398723,
+          "type": "line",
+          "x": 49.71,
+          "y": 69.69
+        },
+        {
+          "charIndex": 35,
+          "lineId": "1-2-59",
+          "timestamp": 1794172431289,
+          "type": "line",
+          "x": 37.38,
+          "y": 22.14
+        },
+        {
+          "charIndex": 30,
+          "lineId": "1-2-61",
+          "timestamp": 1794173291849,
+          "type": "line",
+          "x": 18.11,
+          "y": 6.72
+        }
+      ]
+    },
+    "阿姆斯特朗医生": {
+      "initial": {
+        "x": 6.85,
+        "y": 14.44
+      },
+      "movements": [
+        {
+          "charIndex": 0,
+          "lineId": "1-2-99",
+          "timestamp": 1794174786068,
+          "type": "line",
+          "x": 29.38,
+          "y": 62.61
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-2-115",
+          "timestamp": 1794174833483,
+          "type": "line",
+          "x": 29.58,
+          "y": 54.08
+        },
+        {
+          "charIndex": 21,
+          "lineId": "1-2-121",
+          "timestamp": 1794174889947,
+          "type": "line",
+          "x": 68.21,
+          "y": 17.06
+        },
+        {
+          "charIndex": 6,
+          "lineId": "1-2-108",
+          "timestamp": 1794175070539,
+          "type": "line",
+          "x": 42.77,
+          "y": 60.8
+        },
+        {
+          "charIndex": 51,
+          "lineId": "1-2-117",
+          "timestamp": 1794175361976,
+          "type": "line",
+          "x": 50.19,
+          "y": 47.01
+        }
+      ]
+    },
+    "麦克阿瑟将军": {
+      "initial": {
+        "x": 3.8,
+        "y": 14.26
+      },
+      "movements": [
+        {
+          "charIndex": 14,
+          "lineId": "1-2-32",
+          "timestamp": 1794172254308,
+          "type": "line",
+          "x": 39.11,
+          "y": 49.18
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-30",
+          "timestamp": 1794172274524,
+          "type": "line",
+          "x": 37.67,
+          "y": 15.97
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-2-85",
+          "timestamp": 1794173490626,
+          "type": "line",
+          "x": 62.91,
+          "y": 49.73
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-81",
+          "timestamp": 1794173862109,
+          "type": "line",
+          "x": 58.96,
+          "y": 29.76
+        },
+        {
+          "charIndex": 1,
+          "lineId": "1-2-94",
+          "timestamp": 1794173968321,
+          "type": "line",
+          "x": 26.11,
+          "y": 74.05
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-2-96",
+          "timestamp": 1794174775086,
+          "type": "line",
+          "x": 15.03,
+          "y": 10.53
+        }
+      ]
+    }
+  },
+  "1-3": {
+    "__props__": [
+      {
+        "height": 10.78,
+        "id": "prop_1794169658939",
+        "name": "道具",
+        "rotation": 0,
+        "width": 14.36,
+        "x": 40.83,
+        "y": 13.35
+      },
+      {
+        "height": 11.71,
+        "id": "prop_1794169662043",
+        "name": "道具",
+        "rotation": 0,
+        "width": 13.89,
+        "x": 20.65,
+        "y": 34.73
+      },
+      {
+        "height": 12.980000000000004,
+        "id": "prop_1794169665580",
+        "name": "道具",
+        "rotation": 0,
+        "width": 14.159999999999998,
+        "x": 8.06,
+        "y": 63.44
+      },
+      {
+        "height": 13.350000000000001,
+        "id": "prop_1794169670222",
+        "name": "道具",
+        "rotation": 0,
+        "width": 15.189999999999998,
+        "x": 64.72,
+        "y": 35.28
+      },
+      {
+        "height": 15.719999999999999,
+        "id": "prop_1794169673388",
+        "name": "道具",
+        "rotation": 0,
+        "width": 17.599999999999994,
+        "x": 72.59,
+        "y": 65.63
+      }
+    ],
+    "劳伦斯·沃格雷弗爵士": {
+      "initial": {
+        "x": 1.76,
+        "y": 11.33
+      },
+      "movements": [
+        {
+          "charIndex": 17,
+          "lineId": "1-3-63",
+          "timestamp": 1794178893926,
+          "type": "line",
+          "x": 36.13,
+          "y": 51.91
+        },
+        {
+          "charIndex": 20,
+          "lineId": "1-3-68",
+          "timestamp": 1794178940326,
+          "type": "line",
+          "x": 31.41,
+          "y": 20.87
+        }
+      ]
+    },
+    "埃米莉·布伦特": {
+      "initial": {
+        "x": 6.3,
+        "y": 2.56
+      },
+      "movements": [
+        {
+          "charIndex": 13,
+          "lineId": "1-3-24",
+          "timestamp": 1794177213184,
+          "type": "line",
+          "x": 37.48,
+          "y": 29.76
+        },
+        {
+          "charIndex": 9,
+          "lineId": "1-3-38",
+          "timestamp": 1794177964026,
+          "type": "line",
+          "x": 39.21,
+          "y": 43.74
+        },
+        {
+          "charIndex": 20,
+          "lineId": "1-3-68",
+          "timestamp": 1794178938209,
+          "type": "line",
+          "x": 36.22,
+          "y": 20.33
+        }
+      ]
+    },
+    "威廉·布洛尔": {
+      "initial": {
+        "x": 5.93,
+        "y": 11.33
+      },
+      "movements": [
+        {
+          "charIndex": 59,
+          "lineId": "1-3-70",
+          "timestamp": 1794178986143,
+          "type": "line",
+          "x": 28.42,
+          "y": 70.24
+        },
+        {
+          "charIndex": 47,
+          "lineId": "1-3-104",
+          "timestamp": 1794179587528,
+          "type": "line",
+          "x": 55.3,
+          "y": 29.95
+        }
+      ]
+    },
+    "安东尼·马斯顿": {
+      "initial": {
+        "x": 3.89,
+        "y": 11.88
+      },
+      "movements": [
+        {
+          "charIndex": 59,
+          "lineId": "1-3-70",
+          "timestamp": 1794178980310,
+          "type": "line",
+          "x": 29.19,
+          "y": 64.07
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-3-95",
+          "timestamp": 1794179346794,
+          "type": "line",
+          "x": 52.6,
+          "y": 7.62
+        }
+      ]
+    },
+    "罗杰斯": {
+      "initial": {
+        "x": 4.07,
+        "y": 2.74
+      },
+      "movements": [
+        {
+          "charIndex": 25,
+          "lineId": "1-3-1",
+          "timestamp": 1794176165956,
+          "type": "line",
+          "x": 48.17,
+          "y": 29.04
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-3-2",
+          "timestamp": 1794176192739,
+          "type": "line",
+          "x": 59.06,
+          "y": 35.39
+        },
+        {
+          "charIndex": 26,
+          "lineId": "1-3-4",
+          "timestamp": 1794176213704,
+          "type": "line",
+          "x": 46.63,
+          "y": 29.76
+        },
+        {
+          "charIndex": 0,
+          "lineId": "1-3-11",
+          "timestamp": 1794176260335,
+          "type": "line",
+          "x": 30.35,
+          "y": 50.27
+        },
+        {
+          "charIndex": 34,
+          "lineId": "1-3-2",
+          "timestamp": 1794176677133,
+          "type": "line",
+          "x": 75.63,
+          "y": 51.72
+        },
+        {
+          "charIndex": 32,
+          "lineId": "1-3-21",
+          "timestamp": 1794177170402,
+          "type": "line",
+          "x": 7.9,
+          "y": 11.62
+        }
+      ]
+    },
+    "罗杰斯太太": {
+      "initial": {
+        "x": 1.76,
+        "y": 2.38
+      },
+      "movements": [
+        {
+          "charIndex": 25,
+          "lineId": "1-3-1",
+          "timestamp": 1794176079161,
+          "type": "line",
+          "x": 47.5,
+          "y": 31.22
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-3-1",
+          "timestamp": 1794176157757,
+          "type": "line",
+          "x": 36.9,
+          "y": 48.09
+        },
+        {
+          "charIndex": 12,
+          "lineId": "1-3-5",
+          "timestamp": 1794176219904,
+          "type": "line",
+          "x": 60.31,
+          "y": 44.28
+        },
+        {
+          "charIndex": 22,
+          "lineId": "1-3-13",
+          "timestamp": 1794176269735,
+          "type": "line",
+          "x": 36.61,
+          "y": 36.84
+        },
+        {
+          "charIndex": 12,
+          "lineId": "1-3-3",
+          "timestamp": 1794176684633,
+          "type": "line",
+          "x": 49.04,
+          "y": 35.39
+        },
+        {
+          "charIndex": 25,
+          "lineId": "1-3-20",
+          "timestamp": 1794177154452,
+          "type": "line",
+          "x": 10.12,
+          "y": 7.99
+        }
+      ]
+    },
+    "菲利普·隆巴德": {
+      "initial": {
+        "x": 4.17,
+        "y": 6.76
+      },
+      "movements": [
+        {
+          "charIndex": 11,
+          "lineId": "1-3-59",
+          "timestamp": 1794178663025,
+          "type": "line",
+          "x": 34.3,
+          "y": 23.59
+        },
+        {
+          "charIndex": 64,
+          "lineId": "1-3-61",
+          "timestamp": 1794178878843,
+          "type": "line",
+          "x": 57.42,
+          "y": 8.71
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-3-95",
+          "timestamp": 1794179353060,
+          "type": "line",
+          "x": 43.93,
+          "y": 27.04
+        },
+        {
+          "charIndex": 16,
+          "lineId": "1-3-103",
+          "timestamp": 1794179561361,
+          "type": "line",
+          "x": 40.66,
+          "y": 9.07
+        }
+      ]
+    },
+    "薇拉·克雷松": {
+      "initial": {
+        "x": 1.67,
+        "y": 6.76
+      },
+      "movements": [
+        {
+          "charIndex": 25,
+          "lineId": "1-3-20",
+          "timestamp": 1794177132619,
+          "type": "line",
+          "x": 26.4,
+          "y": 51.91
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-3-23",
+          "timestamp": 1794177187651,
+          "type": "line",
+          "x": 34.3,
+          "y": 26.32
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-3-27",
+          "timestamp": 1794177895809,
+          "type": "line",
+          "x": 45.09,
+          "y": 8.89
+        },
+        {
+          "charIndex": 10,
+          "lineId": "1-3-29",
+          "timestamp": 1794177903926,
+          "type": "line",
+          "x": 40.66,
+          "y": 36.12
+        },
+        {
+          "charIndex": 16,
+          "lineId": "1-3-35",
+          "timestamp": 1794177941659,
+          "type": "line",
+          "x": 61.18,
+          "y": 41.38
+        },
+        {
+          "charIndex": 31,
+          "lineId": "1-3-43",
+          "timestamp": 1794178005259,
+          "type": "line",
+          "x": 48.36,
+          "y": 43.56
+        },
+        {
+          "charIndex": 13,
+          "lineId": "1-3-47",
+          "timestamp": 1794178033976,
+          "type": "line",
+          "x": 61.56,
+          "y": 40.11
+        },
+        {
+          "charIndex": 5,
+          "lineId": "1-3-57",
+          "timestamp": 1794178629542,
+          "type": "line",
+          "x": 59.06,
+          "y": 16.33
+        },
+        {
+          "charIndex": 23,
+          "lineId": "1-3-95",
+          "timestamp": 1794179350777,
+          "type": "line",
+          "x": 51.35,
+          "y": 27.95
+        },
+        {
+          "charIndex": 24,
+          "lineId": "1-3-102",
+          "timestamp": 1794179551794,
+          "type": "line",
+          "x": 46.44,
+          "y": 5.26
+        }
+      ]
+    },
+    "阿姆斯特朗医生": {
+      "initial": {
+        "x": 6.39,
+        "y": 6.58
+      },
+      "movements": [
+        {
+          "charIndex": 11,
+          "lineId": "1-3-59",
+          "timestamp": 1794178688342,
+          "type": "line",
+          "x": 26.01,
+          "y": 58.26
+        },
+        {
+          "charIndex": 10,
+          "lineId": "1-3-75",
+          "timestamp": 1794179008493,
+          "type": "line",
+          "x": 33.62,
+          "y": 61.34
         }
       ]
     }

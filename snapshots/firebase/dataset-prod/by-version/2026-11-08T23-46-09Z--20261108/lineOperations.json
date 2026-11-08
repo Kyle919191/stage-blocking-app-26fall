@@ -1,0 +1,100 @@
+{
+  "added": {
+    "1-10": {
+      "1-10-new-1792193887302": {
+        "addedAt": 1792193887302,
+        "character": "菲利普·隆巴德",
+        "content": "可枪就是丢了。",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-10-6",
+        "sceneId": "1-10"
+      }
+    },
+    "1-12": {
+      "1-12-new-1794013962640": {
+        "addedAt": 1794013962640,
+        "character": "菲利普·隆巴德",
+        "content": "真是江山易改，秉性难移啊，布洛尔！顺便问一句，在朋友和公正之间，你选择了作伪证，不是吗？",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-12-54",
+        "sceneId": "1-12"
+      }
+    },
+    "1-13": {
+      "1-13-new-1793483149632": {
+        "addedAt": 1793483149632,
+        "character": "薇拉·克雷松",
+        "content": "菲利普？菲利普！",
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-13-60",
+        "sceneId": "1-13"
+      }
+    },
+    "1-6": {
+      "1-6-new-1791510763686": {
+        "addedAt": 1791510763686,
+        "character": "薇拉·克雷松",
+        "content": "怎么死的",
+        "id": "1-6-new-1791510763686",
+        "isNew": true,
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-6-102",
+        "sceneId": "1-6"
+      },
+      "1-6-new-1791510801172": {
+        "addedAt": 1791510801172,
+        "character": "威廉·布洛尔",
+        "content": "怎么死的！",
+        "id": "1-6-new-1791510801172",
+        "isNew": true,
+        "isStageDirection": false,
+        "position": "before",
+        "relatedLineId": "1-6-102",
+        "sceneId": "1-6"
+      }
+    },
+    "1-8": {
+      "1-8-new-1792800279073": {
+        "addedAt": 1792800279073,
+        "content": "罗&隆从外淋雨回",
+        "isStageDirection": true,
+        "position": "before",
+        "relatedLineId": "1-8-0",
+        "sceneId": "1-8"
+      },
+      "1-8-new-1792800749748": {
+        "addedAt": 1792800749748,
+        "content": "打雷",
+        "isStageDirection": true,
+        "position": "before",
+        "relatedLineId": "1-8-16",
+        "sceneId": "1-8"
+      }
+    },
+    "1-9": {
+      "1-9-new-1792806910888": {
+        "addedAt": 1792806910888,
+        "content": "听到这个消息，全体沉默几秒",
+        "isStageDirection": true,
+        "position": "before",
+        "relatedLineId": "1-9-35",
+        "sceneId": "1-9"
+      }
+    }
+  },
+  "deleted": {
+    "1-6": [
+      "1-6-new-1791510763686"
+    ],
+    "1-7": [
+      "1-7-0"
+    ],
+    "1-8": [
+      "1-8-38"
+    ]
+  }
+}
