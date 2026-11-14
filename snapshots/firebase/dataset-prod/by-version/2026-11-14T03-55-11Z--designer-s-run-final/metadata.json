@@ -1,0 +1,18 @@
+{
+  "dataset": "prod",
+  "versionName": "designer's run final",
+  "exportedAtUtc": "2026-11-14T03-55-11Z",
+  "databaseUrl": "https://rctc-fall2026-default-rtdb.firebaseio.com",
+  "paths": {
+    "blockingData": "datasets/prod/blockingData",
+    "dialogueEdits": "datasets/prod/dialogueEdits",
+    "lineOperations": "datasets/prod/lineOperations",
+    "notes": "datasets/prod/notes",
+    "versions": "datasets/prod/versions",
+    "scenes": "datasets/prod/scenes",
+    "sceneStageMap": "datasets/prod/sceneStageMap",
+    "stageLibrary": "datasets/prod/stageLibrary",
+    "commonActions": "datasets/prod/commonActions",
+    "scriptData": "datasets/prod/scriptData"
+  }
+}
